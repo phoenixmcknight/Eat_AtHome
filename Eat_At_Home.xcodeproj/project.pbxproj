@@ -15,6 +15,7 @@
 		695FAD3D242EB06600D9AE2F /* SpoonApiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 695FAD3C242EB06600D9AE2F /* SpoonApiModel.swift */; };
 		695FAD41242EC3AD00D9AE2F /* SpoonAPITestData.json in Resources */ = {isa = PBXBuildFile; fileRef = 695FAD3E242EC08E00D9AE2F /* SpoonAPITestData.json */; };
 		695FAD42242EC3C900D9AE2F /* SpoonAPITestData.json in Resources */ = {isa = PBXBuildFile; fileRef = 695FAD3E242EC08E00D9AE2F /* SpoonAPITestData.json */; };
+		695FAD44242ECC3300D9AE2F /* SearchRecipeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 695FAD43242ECC3300D9AE2F /* SearchRecipeVC.swift */; };
 		69D767A1242CF62200B06B2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D767A0242CF62200B06B2A /* AppDelegate.swift */; };
 		69D767A3242CF62200B06B2A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D767A2242CF62200B06B2A /* SceneDelegate.swift */; };
 		69D767AA242CF62300B06B2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 69D767A9242CF62300B06B2A /* Assets.xcassets */; };
@@ -40,6 +41,7 @@
 		695FAD3A242EAF7E00D9AE2F /* SpoonApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpoonApiClient.swift; sourceTree = "<group>"; };
 		695FAD3C242EB06600D9AE2F /* SpoonApiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SpoonApiModel.swift; path = Eat_At_Home/Networking/SpoonApiModel.swift; sourceTree = SOURCE_ROOT; };
 		695FAD3E242EC08E00D9AE2F /* SpoonAPITestData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SpoonAPITestData.json; sourceTree = "<group>"; };
+		695FAD43242ECC3300D9AE2F /* SearchRecipeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchRecipeVC.swift; path = Eat_At_HomeTests/SearchRecipeVC.swift; sourceTree = SOURCE_ROOT; };
 		69D7679D242CF62200B06B2A /* Eat_At_Home.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Eat_At_Home.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69D767A0242CF62200B06B2A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		69D767A2242CF62200B06B2A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				69D767C7242CF67D00B06B2A /* DetailViewControllers */,
+				695FAD43242ECC3300D9AE2F /* SearchRecipeVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -294,6 +297,7 @@
 				695FAD38242EAF2300D9AE2F /* ImageHelper.swift in Sources */,
 				69D767A1242CF62200B06B2A /* AppDelegate.swift in Sources */,
 				695FAD33242EAEE000D9AE2F /* Secrets.swift in Sources */,
+				695FAD44242ECC3300D9AE2F /* SearchRecipeVC.swift in Sources */,
 				695FAD3B242EAF7E00D9AE2F /* SpoonApiClient.swift in Sources */,
 				695FAD39242EAF2300D9AE2F /* NetworkHelper.swift in Sources */,
 				69D767A3242CF62200B06B2A /* SceneDelegate.swift in Sources */,
