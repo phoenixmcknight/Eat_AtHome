@@ -1,10 +1,4 @@
-//
-//  NetworkHelper.swift
-//  iOS-CTA-KCampbell
-//
-//  Created by Krystal Campbell on 12/2/19.
-//  Copyright © 2019 Krystal Campbell. All rights reserved.
-//
+
 
 import Foundation
 
@@ -19,7 +13,10 @@ class NetworkHelper {
     
     static let manager = NetworkHelper()
     
+
     // MARK: - Internal Properties
+    
+    
     
     
     func performDataTask(withUrl url: URL,
