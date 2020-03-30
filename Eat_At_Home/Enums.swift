@@ -7,3 +7,9 @@
 //
 
 import Foundation
+
+enum RegisterCollectionViewCells:String {
+    case dish
+    case settings
+    case cuisine
+}
