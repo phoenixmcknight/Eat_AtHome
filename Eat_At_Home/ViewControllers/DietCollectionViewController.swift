@@ -9,20 +9,33 @@
 import UIKit
 
 
-class DietCollectionViewController: UICollectionViewController {
+class DietCollectionViewController: UIViewController {
+    
+    var dietOptions:[String] = []
+    let dietView = DietView()
+     var onDoneBlock : ((Bool) -> Void)?
+    
+    weak var delegate:DietCollectionViewDelegate?
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        view.addSubview(dietView)
+        addDelegates()
+        
+      
 
         // Do any additional setup after loading the view.
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+      
+        onDoneBlock!(true)
+       
+    }
 
+   
     /*
     // MARK: - Navigation
 
@@ -32,57 +45,78 @@ class DietCollectionViewController: UICollectionViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
-    // MARK: UICollectionViewDataSource
-
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
-
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return 0
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
     
-        // Configure the cell
+    private func addDelegates() {
+        dietView.dietCollectionView.delegate = self
+        dietView.dietCollectionView.dataSource = self
+    }
+
+    }
+
+
+extension DietCollectionViewController:UICollectionViewDelegateFlowLayout
+{
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.width * 0.50, height: view.frame.height * 0.1)
+    }
     
-        return cell
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+return UIEdgeInsets(top: 0, left: 10, bottom: 0, right: -10)
     }
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
     
-    }
-    */
+    
+}
+extension DietCollectionViewController:UICollectionViewDelegate,UICollectionViewDataSource {
+     func numberOfSections(in collectionView: UICollectionView) -> Int {
+           // #warning Incomplete implementation, return the number of sections
+           return 1
+       }
 
+
+        func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+           // #warning Incomplete implementation, return the number of items
+           return dietOptions.count
+       }
+
+        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+           guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RegisterCollectionViewCells.diet.rawValue, for: indexPath) as? DietCollectionViewCell else {return UICollectionViewCell()}
+           let currentItem = dietOptions[indexPath.item]
+            cell.currentOption = currentItem
+           cell.dietActivityIndicator.startAnimating()
+            cell.dietFoodLabel.text = currentItem.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: "+", with: " ")
+            cell.dietImageView.image = UIImage(named: currentItem.replacingOccurrences(of: ",", with: ""))
+            cell.dietActivityIndicator.stopAnimating()
+//           ImageHelper.shared.getImage(urlStr: SpoonAPIClient.client.getIngredientImageURL(ingredientName: currentItem)) { (result) in
+//               DispatchQueue.main.async {
+//                   switch result {
+//                   case .failure(let error):
+//                       cell.dietActivityIndicator.stopAnimating()
+//                       print(error)
+//                       cell.dietImageView.image = UIImage(systemName:StyleGuide.ImageStrings.placeHolder)
+//                   case .success(let image):
+//                       cell.dietActivityIndicator.stopAnimating()
+//                       cell.dietImageView.image = image
+//                   }
+//               }
+//           }
+       
+       
+           return cell
+       }
+       
+        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+           guard let selectedDietOption = collectionView.cellForItem(at: indexPath) as? DietCollectionViewCell else {return}
+           
+            
+            
+           switch selectedDietOption.dietIsSelected {
+           case false:
+               selectedDietOption.dietIsSelected = true
+               delegate?.sendDietSelection(diet: selectedDietOption.currentOption, isAdding: true)
+           case true:
+               selectedDietOption.dietIsSelected = false
+                delegate?.sendDietSelection(diet: selectedDietOption.currentOption,isAdding:false)
+           }
+           
+}
 }
