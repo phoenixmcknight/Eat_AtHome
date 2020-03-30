@@ -12,4 +12,6 @@ enum RegisterCollectionViewCells:String {
     case dish
     case settings
     case cuisine
+    case diet
+    case intolerances
 }

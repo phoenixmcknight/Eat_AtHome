@@ -14,9 +14,10 @@ struct URLFilters  {
     
     
    let listOfFilters:[String] = ["Diet","Intolerances","Exclude Ingredients","Include Ingredients","Max Ready Time","Max Calories"]
-    let listOfDiets:[String] = ["Gluten+Free,","Ketogenic,","Vegetarian,","Lacto-Vegetarian,","Ovo-Vegitarian,","Vegan,","Pescetarian,","Paleo,","Primal,","Whole30"]
+    let listOfDiets:[String] = ["Gluten+Free,","Ketogenic,","Vegetarian,","Lacto-Vegetarian,","Ovo-Vegetarian,","Vegan,","Pescetarian,","Paleo,","Primal,","Whole30,"]
         
     let listOfIntolerances:[String] = ["Dairy,","Egg,","Gluten,","Grain,","Peanut,","Seafood,","Sesame,","Shellfish,","Soy,","Sulfite,","Tree+Nut,","Wheat,"]
+    
   private var excludeIngredients:[String] = []
     
    private var includeIngredients:[String] = []
@@ -36,11 +37,24 @@ struct URLFilters  {
     mutating func addDishType(newType:String) {
         dishTypes.append(newType)
     }
+    
+    mutating func removeDishType(dishType:String) {
+       dishTypes = dishTypes.filter({$0 != dishType})
+    }
+    
     mutating func addCuisine(newCuisine:String) {
         cuisines.append(newCuisine)
     }
+    
+    mutating func removeCuisine(cuisine:String) {
+        cuisines = cuisines.filter({$0 != cuisine})
+    }
     mutating func addDiet(newDiet:String) {
         diets.append(newDiet)
+    }
+    
+    mutating func removeDiet(diet:String) {
+        diets =  diets.filter({$0 != diet})
     }
     mutating func addIntolerance(newIntolerance:String) {
         intolerances.append(newIntolerance)
