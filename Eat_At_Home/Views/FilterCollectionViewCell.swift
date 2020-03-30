@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DietCollectionViewCell: UICollectionViewCell {
+class FilterCollectionViewCell: UICollectionViewCell {
     
     var dietIsSelected:Bool = false {
            didSet {

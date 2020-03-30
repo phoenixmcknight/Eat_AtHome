@@ -14,9 +14,12 @@
 		6902DEDB2431184200649E6E /* URLFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6902DEDA2431184200649E6E /* URLFilters.swift */; };
 		6902DEDD24319D7700649E6E /* QueryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6902DEDC24319D7700649E6E /* QueryView.swift */; };
 		6902DEDF2431A39D00649E6E /* DietCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6902DEDE2431A39D00649E6E /* DietCollectionViewController.swift */; };
-		6902DEE12431A41200649E6E /* DietCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6902DEE02431A41200649E6E /* DietCollectionViewCell.swift */; };
+		6902DEE12431A41200649E6E /* FilterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6902DEE02431A41200649E6E /* FilterCollectionViewCell.swift */; };
 		69479F742432505100976E90 /* DietCollectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69479F732432505100976E90 /* DietCollectionViewDelegate.swift */; };
 		69479F7624325C4D00976E90 /* DietView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69479F7524325C4D00976E90 /* DietView.swift */; };
+		69479F782432A13100976E90 /* IntolerancesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69479F772432A13100976E90 /* IntolerancesView.swift */; };
+		69479F7A2432A5A600976E90 /* IntoleranceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69479F792432A5A600976E90 /* IntoleranceViewController.swift */; };
+		69479F7C2432A81E00976E90 /* IntoleranceCollectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69479F7B2432A81E00976E90 /* IntoleranceCollectionViewDelegate.swift */; };
 		695FAD33242EAEE000D9AE2F /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 695FAD32242EAEE000D9AE2F /* Secrets.swift */; };
 		695FAD37242EAF2300D9AE2F /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 695FAD34242EAF2300D9AE2F /* AppError.swift */; };
 		695FAD38242EAF2300D9AE2F /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 695FAD35242EAF2300D9AE2F /* ImageHelper.swift */; };
@@ -55,9 +58,12 @@
 		6902DEDA2431184200649E6E /* URLFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLFilters.swift; sourceTree = "<group>"; };
 		6902DEDC24319D7700649E6E /* QueryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryView.swift; sourceTree = "<group>"; };
 		6902DEDE2431A39D00649E6E /* DietCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietCollectionViewController.swift; sourceTree = "<group>"; };
-		6902DEE02431A41200649E6E /* DietCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietCollectionViewCell.swift; sourceTree = "<group>"; };
+		6902DEE02431A41200649E6E /* FilterCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCollectionViewCell.swift; sourceTree = "<group>"; };
 		69479F732432505100976E90 /* DietCollectionViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietCollectionViewDelegate.swift; sourceTree = "<group>"; };
 		69479F7524325C4D00976E90 /* DietView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietView.swift; sourceTree = "<group>"; };
+		69479F772432A13100976E90 /* IntolerancesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntolerancesView.swift; sourceTree = "<group>"; };
+		69479F792432A5A600976E90 /* IntoleranceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntoleranceViewController.swift; sourceTree = "<group>"; };
+		69479F7B2432A81E00976E90 /* IntoleranceCollectionViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntoleranceCollectionViewDelegate.swift; sourceTree = "<group>"; };
 		695FAD32242EAEE000D9AE2F /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = Eat_At_Home/Secrets.swift; sourceTree = SOURCE_ROOT; };
 		695FAD34242EAF2300D9AE2F /* AppError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		695FAD35242EAF2300D9AE2F /* ImageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
@@ -103,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				69479F732432505100976E90 /* DietCollectionViewDelegate.swift */,
+				69479F7B2432A81E00976E90 /* IntoleranceCollectionViewDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -214,8 +221,9 @@
 				6902DED624301A4C00649E6E /* SearchRecipeSettingsCollectionViewCell.swift */,
 				6902DED8243111AC00649E6E /* NavigationBarTitleView.swift */,
 				6902DEDC24319D7700649E6E /* QueryView.swift */,
-				6902DEE02431A41200649E6E /* DietCollectionViewCell.swift */,
+				6902DEE02431A41200649E6E /* FilterCollectionViewCell.swift */,
 				69479F7524325C4D00976E90 /* DietView.swift */,
+				69479F772432A13100976E90 /* IntolerancesView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -226,6 +234,7 @@
 				6902DEDE2431A39D00649E6E /* DietCollectionViewController.swift */,
 				695FAD43242ECC3300D9AE2F /* SearchRecipeVC.swift */,
 				69D767C7242CF67D00B06B2A /* DetailViewControllers */,
+				69479F792432A5A600976E90 /* IntoleranceViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -361,9 +370,12 @@
 				695FAD4C242EE00600D9AE2F /* CustomIndicator.swift in Sources */,
 				6902DED724301A4C00649E6E /* SearchRecipeSettingsCollectionViewCell.swift in Sources */,
 				6902DED9243111AC00649E6E /* NavigationBarTitleView.swift in Sources */,
+				69479F782432A13100976E90 /* IntolerancesView.swift in Sources */,
 				695FAD39242EAF2300D9AE2F /* NetworkHelper.swift in Sources */,
-				6902DEE12431A41200649E6E /* DietCollectionViewCell.swift in Sources */,
+				6902DEE12431A41200649E6E /* FilterCollectionViewCell.swift in Sources */,
 				69D767A3242CF62200B06B2A /* SceneDelegate.swift in Sources */,
+				69479F7C2432A81E00976E90 /* IntoleranceCollectionViewDelegate.swift in Sources */,
+				69479F7A2432A5A600976E90 /* IntoleranceViewController.swift in Sources */,
 				6902DEDB2431184200649E6E /* URLFilters.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

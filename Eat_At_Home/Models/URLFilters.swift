@@ -56,8 +56,14 @@ struct URLFilters  {
     mutating func removeDiet(diet:String) {
         diets =  diets.filter({$0 != diet})
     }
+    
+    
     mutating func addIntolerance(newIntolerance:String) {
         intolerances.append(newIntolerance)
+    }
+    
+    mutating func removeIntolerance(intolerance:String) {
+        intolerances = intolerances.filter({$0 != intolerance})
     }
     
     mutating func changeMaxReadyTime(newMaxReadyTime:Int) {
