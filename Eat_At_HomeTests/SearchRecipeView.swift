@@ -13,13 +13,12 @@ class SearchRecipeView: UIView {
     //include cuisine and diet in settings
    
 
-//    lazy var mainSearchRecipeBar:UISearchBar =
-//        {
-//        let main = UISearchBar()
-//            main.placeholder = "Find a Recipe"
-//
-//            return main
-//    }()
+    lazy var mainSearchRecipeBar:UISearchBar =
+        {
+        let main = UISearchBar()
+            main.placeholder = "Find a Recipe"
+            return main
+    }()
 //
 //    lazy var includeIngredientSearchBar:UISearchBar =
 //        {
@@ -43,10 +42,9 @@ class SearchRecipeView: UIView {
         {
         var layout = UICollectionViewFlowLayout()
             layout.scrollDirection = .horizontal
-            layout.sectionInset = UIEdgeInsets(top: self.frame.height * 0.01, left: self.frame.width * 0.01, bottom: -self.frame.height * 0.01, right: -self.frame.width * 0.01)
             let category = UICollectionView(frame: UIScreen.main.bounds, collectionViewLayout: layout)
             category.backgroundColor = .clear
-            category.register(SearchRecipeCourseAndCuisineCollectionViewCell.self, forCellWithReuseIdentifier: "dish")
+            category.register(SearchRecipeCourseAndCuisineCollectionViewCell.self, forCellWithReuseIdentifier: RegisterCollectionViewCells.dish.rawValue)
             return category
     }()
     
@@ -57,7 +55,7 @@ class SearchRecipeView: UIView {
                      layout.scrollDirection = .horizontal
                      let settings = UICollectionView(frame: UIScreen.main.bounds, collectionViewLayout: layout)
                      settings.backgroundColor = .clear
-            settings.register(SearchRecipeSettingsCollectionViewCell.self, forCellWithReuseIdentifier: "settings")
+            settings.register(SearchRecipeSettingsCollectionViewCell.self, forCellWithReuseIdentifier: RegisterCollectionViewCells.settings.rawValue)
                      return settings
             
     }()
@@ -69,7 +67,7 @@ class SearchRecipeView: UIView {
                         layout.scrollDirection = .horizontal
                         let cuisine = UICollectionView(frame: UIScreen.main.bounds, collectionViewLayout: layout)
                         cuisine.backgroundColor = .clear
-            cuisine.register(SearchRecipeCourseAndCuisineCollectionViewCell.self, forCellWithReuseIdentifier: "cuisine")
+            cuisine.register(SearchRecipeCourseAndCuisineCollectionViewCell.self, forCellWithReuseIdentifier: RegisterCollectionViewCells.cuisine.rawValue)
                         return cuisine
                
        }()
