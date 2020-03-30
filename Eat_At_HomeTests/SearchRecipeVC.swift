@@ -148,6 +148,25 @@ return cellThree
                 view.alpha = 0.5
                 present(dietCV,animated: true)
                 
+            case "Intolerances":
+                 let intoleranceVC = IntoleranceViewController()
+                               intoleranceVC.intoleranceOptions = urlFilters.listOfIntolerances
+                               intoleranceVC.delegate = self
+                               intoleranceVC.intoleranceView.frame = CGRect(x: 0, y: 0, width: view.frame.width * 0.80, height: view.frame.height / 2)
+                               intoleranceVC.intoleranceView.center.x = view.center.x
+                               intoleranceVC.intoleranceView.center.y = searchRecipeView.cuisineLabel.center.y - view.frame.height * 0.025
+                               
+                               intoleranceVC.intoleranceView.layer.cornerRadius = 25
+                               intoleranceVC.intoleranceView.layer.masksToBounds = true
+                          
+                              intoleranceVC.modalPresentationStyle = .formSheet
+                               
+                               intoleranceVC.onDoneBlock = { (result) in
+                                       self.view.alpha = 1.0
+                               }
+                               
+                               view.alpha = 0.5
+                               present(intoleranceVC,animated: true)
                
             default:
                 print("")
@@ -187,6 +206,17 @@ extension SearchRecipeVC:DietCollectionViewDelegate {
             urlFilters.removeDiet(diet: diet)
         }
     }
-    
-    
 }
+extension SearchRecipeVC:IntoleranceViewControllerDelegate {
+    func sendIntoleranceSelection(intolerance: String, isAdding: Bool) {
+        switch isAdding {
+            case true:
+                urlFilters.addIntolerance(newIntolerance: intolerance)
+        case false:
+            urlFilters.removeIntolerance(intolerance: intolerance)
+            }
+        }
+    }
+    
+    
+

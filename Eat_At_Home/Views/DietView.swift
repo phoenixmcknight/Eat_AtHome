@@ -27,7 +27,7 @@ class DietView: UIView {
             let layout:UICollectionViewFlowLayout = UICollectionViewFlowLayout()
                     layout.scrollDirection = .vertical
             let diet:UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-            diet.register(DietCollectionViewCell.self, forCellWithReuseIdentifier: RegisterCollectionViewCells.diet.rawValue)
+            diet.register(FilterCollectionViewCell.self, forCellWithReuseIdentifier: RegisterCollectionViewCells.diet.rawValue)
             diet.backgroundColor = .clear
             
             return diet

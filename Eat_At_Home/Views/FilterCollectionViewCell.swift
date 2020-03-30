@@ -8,11 +8,11 @@
 
 import UIKit
 
-class DietCollectionViewCell: UICollectionViewCell {
+class FilterCollectionViewCell: UICollectionViewCell {
     
-    var dietIsSelected:Bool = false {
+    var filterIsSelected:Bool = false {
            didSet {
-               switchBackgroundColorOfCell(bool: dietIsSelected)
+               switchBackgroundColorOfCell(bool: filterIsSelected)
            }
        }
     
@@ -40,7 +40,7 @@ class DietCollectionViewCell: UICollectionViewCell {
               return label
       }()
     
-    lazy var dietActivityIndicator:UIActivityIndicatorView =
+    lazy var intoleranceActivityIndc:UIActivityIndicatorView =
         {
       let activity = UIActivityIndicatorView()
             activity.hidesWhenStopped = true
@@ -70,7 +70,7 @@ class DietCollectionViewCell: UICollectionViewCell {
     private func addSubviews() {
         self.addSubview(dietImageView)
         self.addSubview(dietFoodLabel)
-        self.addSubview(dietActivityIndicator)
+        self.addSubview(intoleranceActivityIndc)
     }
     
     private func dietLabelConstraints()
@@ -97,10 +97,10 @@ class DietCollectionViewCell: UICollectionViewCell {
         
     }
     private func activityIndicatorConstraints() {
-        dietActivityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        intoleranceActivityIndc.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            dietActivityIndicator.centerXAnchor.constraint(equalTo: dietImageView.centerXAnchor),
-            dietActivityIndicator.centerYAnchor.constraint(equalTo: self.dietImageView.centerYAnchor)
+            intoleranceActivityIndc.centerXAnchor.constraint(equalTo: dietImageView.centerXAnchor),
+            intoleranceActivityIndc.centerYAnchor.constraint(equalTo: self.dietImageView.centerYAnchor)
         ])
     }
     
