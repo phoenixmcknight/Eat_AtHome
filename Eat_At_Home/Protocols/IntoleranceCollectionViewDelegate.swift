@@ -7,3 +7,8 @@
 //
 
 import Foundation
+
+protocol IntoleranceViewControllerDelegate:AnyObject {
+func sendIntoleranceSelection(intolerance:String,isAdding:Bool)
+
+}

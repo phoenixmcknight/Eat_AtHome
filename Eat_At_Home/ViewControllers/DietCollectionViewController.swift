@@ -79,13 +79,13 @@ extension DietCollectionViewController:UICollectionViewDelegate,UICollectionView
        }
 
         func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-           guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RegisterCollectionViewCells.diet.rawValue, for: indexPath) as? DietCollectionViewCell else {return UICollectionViewCell()}
+           guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RegisterCollectionViewCells.diet.rawValue, for: indexPath) as? FilterCollectionViewCell else {return UICollectionViewCell()}
            let currentItem = dietOptions[indexPath.item]
             cell.currentOption = currentItem
-           cell.dietActivityIndicator.startAnimating()
+           cell.intoleranceActivityIndc.startAnimating()
             cell.dietFoodLabel.text = currentItem.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: "+", with: " ")
             cell.dietImageView.image = UIImage(named: currentItem.replacingOccurrences(of: ",", with: ""))
-            cell.dietActivityIndicator.stopAnimating()
+            cell.intoleranceActivityIndc.stopAnimating()
 //           ImageHelper.shared.getImage(urlStr: SpoonAPIClient.client.getIngredientImageURL(ingredientName: currentItem)) { (result) in
 //               DispatchQueue.main.async {
 //                   switch result {
@@ -105,16 +105,16 @@ extension DietCollectionViewController:UICollectionViewDelegate,UICollectionView
        }
        
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-           guard let selectedDietOption = collectionView.cellForItem(at: indexPath) as? DietCollectionViewCell else {return}
+           guard let selectedDietOption = collectionView.cellForItem(at: indexPath) as? FilterCollectionViewCell else {return}
            
             
             
-           switch selectedDietOption.dietIsSelected {
+           switch selectedDietOption.filterIsSelected {
            case false:
-               selectedDietOption.dietIsSelected = true
+               selectedDietOption.filterIsSelected = true
                delegate?.sendDietSelection(diet: selectedDietOption.currentOption, isAdding: true)
            case true:
-               selectedDietOption.dietIsSelected = false
+               selectedDietOption.filterIsSelected = false
                 delegate?.sendDietSelection(diet: selectedDietOption.currentOption,isAdding:false)
            }
            
