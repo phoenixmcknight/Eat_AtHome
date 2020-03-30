@@ -1,10 +1,4 @@
-//
-//  ImageHelper.swift
-//  iOS-CTA-KCampbell
-//
-//  Created by Krystal Campbell on 12/4/19.
-//  Copyright © 2019 Krystal Campbell. All rights reserved.
-//
+
 
 import Foundation
 import UIKit
