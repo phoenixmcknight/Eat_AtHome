@@ -15,6 +15,9 @@
 		6902DEDD24319D7700649E6E /* QueryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6902DEDC24319D7700649E6E /* QueryView.swift */; };
 		6902DEDF2431A39D00649E6E /* DietCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6902DEDE2431A39D00649E6E /* DietCollectionViewController.swift */; };
 		6902DEE12431A41200649E6E /* FilterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6902DEE02431A41200649E6E /* FilterCollectionViewCell.swift */; };
+		6926FF502433BF8100081FC6 /* ReadyTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6926FF4F2433BF8100081FC6 /* ReadyTimeViewController.swift */; };
+		6926FF522433CE6000081FC6 /* TimeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6926FF512433CE6000081FC6 /* TimeDelegate.swift */; };
+		6926FF542433D96900081FC6 /* CaloriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6926FF532433D96900081FC6 /* CaloriesViewController.swift */; };
 		69479F742432505100976E90 /* DietCollectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69479F732432505100976E90 /* DietCollectionViewDelegate.swift */; };
 		69479F7624325C4D00976E90 /* DietView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69479F7524325C4D00976E90 /* DietView.swift */; };
 		69479F782432A13100976E90 /* IntolerancesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69479F772432A13100976E90 /* IntolerancesView.swift */; };
@@ -34,6 +37,7 @@
 		695FAD4A242EDFF900D9AE2F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 695FAD49242EDFF900D9AE2F /* Extensions.swift */; };
 		695FAD4C242EE00600D9AE2F /* CustomIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 695FAD4B242EE00600D9AE2F /* CustomIndicator.swift */; };
 		695FAD4D242EE52800D9AE2F /* SpoonApiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 695FAD3C242EB06600D9AE2F /* SpoonApiModel.swift */; };
+		69B5FE612433BB2200865018 /* TimeAndNumberSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B5FE602433BB2200865018 /* TimeAndNumberSettingsView.swift */; };
 		69D767A1242CF62200B06B2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D767A0242CF62200B06B2A /* AppDelegate.swift */; };
 		69D767A3242CF62200B06B2A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D767A2242CF62200B06B2A /* SceneDelegate.swift */; };
 		69D767AA242CF62300B06B2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 69D767A9242CF62300B06B2A /* Assets.xcassets */; };
@@ -63,6 +67,9 @@
 		6902DEDC24319D7700649E6E /* QueryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryView.swift; sourceTree = "<group>"; };
 		6902DEDE2431A39D00649E6E /* DietCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietCollectionViewController.swift; sourceTree = "<group>"; };
 		6902DEE02431A41200649E6E /* FilterCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCollectionViewCell.swift; sourceTree = "<group>"; };
+		6926FF4F2433BF8100081FC6 /* ReadyTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyTimeViewController.swift; sourceTree = "<group>"; };
+		6926FF512433CE6000081FC6 /* TimeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeDelegate.swift; sourceTree = "<group>"; };
+		6926FF532433D96900081FC6 /* CaloriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesViewController.swift; sourceTree = "<group>"; };
 		69479F732432505100976E90 /* DietCollectionViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietCollectionViewDelegate.swift; sourceTree = "<group>"; };
 		69479F7524325C4D00976E90 /* DietView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietView.swift; sourceTree = "<group>"; };
 		69479F772432A13100976E90 /* IntolerancesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntolerancesView.swift; sourceTree = "<group>"; };
@@ -81,6 +88,7 @@
 		695FAD47242EDFD800D9AE2F /* SearchRecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchRecipeView.swift; path = Eat_At_HomeTests/SearchRecipeView.swift; sourceTree = SOURCE_ROOT; };
 		695FAD49242EDFF900D9AE2F /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		695FAD4B242EE00600D9AE2F /* CustomIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomIndicator.swift; sourceTree = "<group>"; };
+		69B5FE602433BB2200865018 /* TimeAndNumberSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeAndNumberSettingsView.swift; sourceTree = "<group>"; };
 		69D7679D242CF62200B06B2A /* Eat_At_Home.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Eat_At_Home.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69D767A0242CF62200B06B2A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		69D767A2242CF62200B06B2A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -119,6 +127,7 @@
 				69479F732432505100976E90 /* DietCollectionViewDelegate.swift */,
 				69479F7B2432A81E00976E90 /* IntoleranceCollectionViewDelegate.swift */,
 				69D868A32432FE5A00F149A2 /* IngredientDelegates.swift */,
+				6926FF512433CE6000081FC6 /* TimeDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -234,6 +243,7 @@
 				69479F7524325C4D00976E90 /* DietView.swift */,
 				69479F772432A13100976E90 /* IntolerancesView.swift */,
 				69D8689F2432ED1C00F149A2 /* IngredientsView.swift */,
+				69B5FE602433BB2200865018 /* TimeAndNumberSettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -247,6 +257,8 @@
 				69479F792432A5A600976E90 /* IntoleranceViewController.swift */,
 				69D868A12432FC1900F149A2 /* IncludeIngredientViewController.swift */,
 				694AB91024338E2700CA0147 /* ExcludeIngredientViewController.swift */,
+				6926FF4F2433BF8100081FC6 /* ReadyTimeViewController.swift */,
+				6926FF532433D96900081FC6 /* CaloriesViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -363,6 +375,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				69B5FE612433BB2200865018 /* TimeAndNumberSettingsView.swift in Sources */,
 				6902DEDF2431A39D00649E6E /* DietCollectionViewController.swift in Sources */,
 				6902DED32430069200649E6E /* StyleGuide.swift in Sources */,
 				695FAD37242EAF2300D9AE2F /* AppError.swift in Sources */,
@@ -374,6 +387,7 @@
 				695FAD33242EAEE000D9AE2F /* Secrets.swift in Sources */,
 				6902DED52430191200649E6E /* Enums.swift in Sources */,
 				695FAD44242ECC3300D9AE2F /* SearchRecipeVC.swift in Sources */,
+				6926FF542433D96900081FC6 /* CaloriesViewController.swift in Sources */,
 				69D868A02432ED1C00F149A2 /* IngredientsView.swift in Sources */,
 				694AB91124338E2700CA0147 /* ExcludeIngredientViewController.swift in Sources */,
 				695FAD4A242EDFF900D9AE2F /* Extensions.swift in Sources */,
@@ -385,10 +399,12 @@
 				695FAD4C242EE00600D9AE2F /* CustomIndicator.swift in Sources */,
 				6902DED724301A4C00649E6E /* SearchRecipeSettingsCollectionViewCell.swift in Sources */,
 				6902DED9243111AC00649E6E /* NavigationBarTitleView.swift in Sources */,
+				6926FF522433CE6000081FC6 /* TimeDelegate.swift in Sources */,
 				69479F782432A13100976E90 /* IntolerancesView.swift in Sources */,
 				69D868A22432FC1900F149A2 /* IncludeIngredientViewController.swift in Sources */,
 				695FAD39242EAF2300D9AE2F /* NetworkHelper.swift in Sources */,
 				6902DEE12431A41200649E6E /* FilterCollectionViewCell.swift in Sources */,
+				6926FF502433BF8100081FC6 /* ReadyTimeViewController.swift in Sources */,
 				69D767A3242CF62200B06B2A /* SceneDelegate.swift in Sources */,
 				69479F7C2432A81E00976E90 /* IntoleranceCollectionViewDelegate.swift in Sources */,
 				69479F7A2432A5A600976E90 /* IntoleranceViewController.swift in Sources */,
