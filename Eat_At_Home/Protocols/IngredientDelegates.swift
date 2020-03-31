@@ -7,3 +7,12 @@
 //
 
 import Foundation
+
+
+protocol  IncludeIngredientDelegate:AnyObject {
+    func sendIngredient(isAdding:Bool,ingredient:String)
+}
+
+protocol ExcludeIngredientDelegate:AnyObject {
+    func exlcudeIngredient(isAdding:Bool,ingredient:String)
+}

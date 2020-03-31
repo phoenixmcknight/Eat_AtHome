@@ -10,21 +10,34 @@ import UIKit
 
 class IngredientViewController: UIViewController {
 
+    let ingredientView = IncludeIngredientsView()
+    
+      var onDoneBlock : ((Bool) -> Void)?
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        view.addSubview(ingredientView)
+        addDelegates()
         // Do any additional setup after loading the view.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        onDoneBlock!(true)
     }
-    */
-
+    
+    private func addDelegates() {
+        ingredientView.includeIngredientsTextField.delegate = self
+    }
+   
+}
+extension IngredientViewController:UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let ingredientName = textField.text else {return false}
+ingredientView.createLabel(ingredientName:ingredientName , imageName: ingredientName)
+        
+ingredientView.delegate?.sendIngredient(isAdding: true, ingredient: ingredientName)
+        return true
+    }
 }
