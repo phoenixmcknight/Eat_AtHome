@@ -7,3 +7,10 @@
 //
 
 import Foundation
+
+protocol ReadyTimeDelegate:AnyObject {
+    func sendTime(time:Int)
+}
+protocol CaloriesDelegate:AnyObject {
+    func sendCalories(calories:Int)
+}
