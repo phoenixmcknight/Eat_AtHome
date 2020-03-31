@@ -66,6 +66,14 @@ struct URLFilters  {
         intolerances = intolerances.filter({$0 != intolerance})
     }
     
+    mutating func includeIngredient(ingredient:String) {
+        includeIngredients.append(ingredient)
+    }
+    
+    mutating func removeIngredient(ingredient:String) {
+      includeIngredients =  includeIngredients.filter({$0 != ingredient})
+    }
+    
     mutating func changeMaxReadyTime(newMaxReadyTime:Int) {
         maxReadyTime = newMaxReadyTime
     }
