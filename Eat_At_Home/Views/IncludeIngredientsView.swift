@@ -19,8 +19,10 @@ class IncludeIngredientsView: UIView {
     
     lazy var outletArray:[UIView] = [self.includeIngredientsTextField]
     
+    weak var delegate:IncludeIngredientDelegate?
+    
     override init(frame:CGRect) {
-        super.init(frame: frame)
+        super.init(frame: UIScreen.main.bounds)
         commonInit()
     }
     
@@ -32,7 +34,7 @@ class IncludeIngredientsView: UIView {
     {
         addSubviews()
         ingredientTextFieldConstraints()
-        self.backgroundColor = StyleGuide.AppColors.backgroundColor
+        self.backgroundColor = .white
     }
     
     private func addSubviews() {
@@ -43,12 +45,11 @@ class IncludeIngredientsView: UIView {
         
         newStackView.axis = .horizontal
         newStackView.spacing = 5
-        newStackView.distribution = .fillProportionally
         newStackView.contentMode = .center
         return newStackView
     }
     
-    private func configureNewView(lastOutlet:UIView) -> UIView {
+    private func configureNewView() -> UIView {
        
         let newView = UIView()
         
@@ -68,23 +69,35 @@ class IncludeIngredientsView: UIView {
         
         newView.translatesAutoresizingMaskIntoConstraints = false
              
-        NSLayoutConstraint.activate([
-        newView.topAnchor.constraint(equalTo: lastOutlet.bottomAnchor),
-        newView.centerXAnchor.constraint(equalTo: lastOutlet.centerXAnchor),
-        newView.heightAnchor.constraint(equalTo: includeIngredientsTextField.heightAnchor),
-         newView.widthAnchor.constraint(equalTo: includeIngredientsTextField.widthAnchor, multiplier: 0.8)
-        
-        ])
+       
         
         newView.layer.borderWidth = 5
         newView.layer.borderColor = UIColor.green.cgColor
         return newView
     }
     
+    private func newViewConstraints(newView:UIView,lastOutlet:UIView) {
+        NSLayoutConstraint.activate([
+               newView.topAnchor.constraint(equalTo: lastOutlet.bottomAnchor),
+               newView.centerXAnchor.constraint(equalTo: lastOutlet.centerXAnchor),
+               newView.heightAnchor.constraint(equalTo: includeIngredientsTextField.heightAnchor),
+                newView.widthAnchor.constraint(equalTo: includeIngredientsTextField.widthAnchor, multiplier: 0.8)
+               
+               ])
+    }
+    
+    private func newImageViewConstraints(newImageView:UIImageView) {
+     
+        NSLayoutConstraint.activate([
+               newImageView.heightAnchor.constraint(equalTo: includeIngredientsTextField.heightAnchor),
+               newImageView.widthAnchor.constraint(equalTo: includeIngredientsTextField.widthAnchor, multiplier: 0.2)
+              ])
+    }
+    
     private func configureNewLabel(ingredientName:String) -> UILabel
     {
         let newLabel = UILabel()
-         newLabel.heightAnchor.constraint(equalTo: includeIngredientsTextField.heightAnchor).isActive = true
+         
         newLabel.text = ingredientName
         return newLabel
     }
@@ -102,12 +115,9 @@ class IncludeIngredientsView: UIView {
         newImageView.addSubview(activity)
         activity.center = newImageView.center
         
-        NSLayoutConstraint.activate([
-         newImageView.heightAnchor.constraint(equalTo: includeIngredientsTextField.heightAnchor),
-         newImageView.widthAnchor.constraint(equalTo: includeIngredientsTextField.widthAnchor, multiplier: 0.2)
-        ])
+      
         
-        ImageHelper.shared.getImage(urlStr: SpoonAPIClient.client.getIngredientImageURL(ingredientName: ingredientName)) { (result) in
+        ImageHelper.shared.getImage(urlStr: SpoonAPIClient.client.getIngredientImageURL(ingredientName: ingredientName.lowercased())) { (result) in
             DispatchQueue.main.async {
                 
             
@@ -127,36 +137,28 @@ class IncludeIngredientsView: UIView {
     
     
     
-     private func createLabel(ingredientName:String,imageName:String)
+     public func createLabel(ingredientName:String,imageName:String)
     {
          guard let lastOutlet = outletArray.last else {return}
         guard outletArray.count <= 8 else {return}
      
         let newLabel = configureNewLabel(ingredientName: ingredientName)
         let newImageView = confingureNewImageView(ingredientName: ingredientName)
-       let newView = configureNewView(lastOutlet: lastOutlet)
+       let newView = configureNewView()
        let imageLabelStackView = configureStackView(newLabel: newLabel, newImageView: newImageView)
+        imageLabelStackView.translatesAutoresizingMaskIntoConstraints = false
        newView.addSubview(imageLabelStackView)
        self.addSubview(newView)
+        newImageViewConstraints(newImageView: newImageView)
+        newViewConstraints(newView: newView, lastOutlet: lastOutlet)
+        newLabel.heightAnchor.constraint(equalTo: includeIngredientsTextField.heightAnchor).isActive = true
+        
        outletArray.append(newView)
      
         }
     
     @objc private func clickToRemoveTapGesture(sender:UIGestureRecognizer) {
-           guard outletArray.count > 1 else {return}
-           guard let currentOutlet = outletArray.firstIndex(where: {$0 == sender.view} ) else {return}
-           if outletArray[currentOutlet] == outletArray.last {
-           outletArray[currentOutlet].removeFromSuperview()
-           outletArray.remove(at: currentOutlet)
-           } else {
-               let index = currentOutlet as! Int
-             outletArray[currentOutlet].removeFromSuperview()
-             outletArray.remove(at: currentOutlet)
-           outletArray[index].topAnchor.constraint(equalTo: outletArray[index - 1].bottomAnchor).isActive = true
-               outletArray[index].centerXAnchor.constraint(equalTo: outletArray[index - 1].centerXAnchor).isActive = true
-               
-               
-           }
+         removeIngredient(sender: sender)
        }
     
     @objc private func panGesture(sender:UIPanGestureRecognizer)
@@ -165,10 +167,7 @@ class IncludeIngredientsView: UIView {
                   
                   let card = sender.view
                   let pointer = sender.translation(in: self)
-                  
-                  //      uncomment when bug is fixed -view.center.y makes the card move to the bottom of the screen-
-                  //        card?.center = CGPoint(x: view.center.x + pointer.x, y: view.center.y + pointer.y)
-                  
+ 
                   card?.center.x = self.center.x + pointer.x
                   
                   let xFromCenter = (card?.center.x)! - self.center.x
@@ -183,12 +182,12 @@ class IncludeIngredientsView: UIView {
                   card?.transform = CGAffineTransform(rotationAngle: rotation).scaledBy(x: scaler, y: scaler)
                   
                   if xFromCenter > 0 {
-                      card?.layer.borderWidth = 2
+                      card?.layer.borderWidth = 5
                       card?.layer.borderColor = UIColor.red.withAlphaComponent(abs(xFromCenter / self.center.x)).cgColor
                       
                       
                   } else if xFromCenter < 0 {
-                      card?.layer.borderWidth = 2
+                      card?.layer.borderWidth = 5
                       card?.layer.borderColor = UIColor.red.withAlphaComponent(abs(xFromCenter / self.center.x)).cgColor
                   }
                   
@@ -197,10 +196,10 @@ class IncludeIngredientsView: UIView {
                       if xFromCenter > 0 && xFromCenter < distanceFromCenterToTheRight {
                           
                           UIView.animate(withDuration: 0.2) {
-                              
-                              card?.center.x = self.center.x
-                           //   card?.layer.borderWidth = 0
-                            //  card?.layer.borderColor = .none
+                               card?.layer.borderColor = UIColor.green.cgColor
+                            
+                            card?.center.x = self.includeIngredientsTextField.center.x
+                            
                               card?.transform = .identity
                             
                           }
@@ -208,9 +207,10 @@ class IncludeIngredientsView: UIView {
                       } else if xFromCenter < 0 && xFromCenter > distanceFromCenterToTheLeft {
                           
                           UIView.animate(withDuration: 0.2) {
-                              card?.center.x = self.center.x
-                             // card?.layer.borderWidth = 0
-                            //  card?.layer.borderColor = .none
+                            card?.center.x = self.includeIngredientsTextField.center.x
+                           
+                            card?.layer.borderColor = UIColor.green.cgColor
+                            
                               card?.transform = .identity
            
                           }
@@ -219,6 +219,8 @@ class IncludeIngredientsView: UIView {
                           
                           UIView.animate(withDuration: 0.5, animations: {
                               card?.center = CGPoint(x: self.frame.maxX + (self.frame.width * 0.5), y: (card?.center.y)! + (card?.superview?.frame.height)! * 0.05)
+                            
+                            self.removeIngredient(sender: sender)
                            
                           })
                         
@@ -228,12 +230,39 @@ class IncludeIngredientsView: UIView {
                           UIView.animate(withDuration: 0.5, animations: {
                               
                               card?.center = CGPoint(x: self.frame.maxX - (self.frame.width * 1.5), y: ((card?.center.y)!) + (card?.superview?.frame.height)! * 0.05)
+                            
+                            self.removeIngredient(sender: sender)
                           })
                        
                           return
                       }
                   }
               }
+    
+    private func removeIngredient(sender:UIGestureRecognizer) {
+        guard outletArray.count > 1 else {return}
+               guard let currentOutlet = outletArray.firstIndex(where: {$0 == sender.view} ) else {return}
+        
+        guard let selectedLabel = outletArray[currentOutlet].subviews[0].subviews[1] as? UILabel else {return}
+        guard let ingredientText = selectedLabel.text else {return}
+        
+        
+               if outletArray[currentOutlet] == outletArray.last {
+               outletArray[currentOutlet].removeFromSuperview()
+                
+                
+                
+                delegate?.sendIngredient(isAdding: false, ingredient: ingredientText)
+               outletArray.remove(at: currentOutlet)
+               } else {
+                   let index = currentOutlet as! Int
+                 outletArray[currentOutlet].removeFromSuperview()
+                delegate?.sendIngredient(isAdding: false, ingredient: ingredientText)
+                 outletArray.remove(at: currentOutlet)
+               outletArray[index].topAnchor.constraint(equalTo: outletArray[index - 1].bottomAnchor).isActive = true
+                   outletArray[index].centerXAnchor.constraint(equalTo: outletArray[index - 1].centerXAnchor).isActive = true
+    }
+    }
     
     private func ingredientTextFieldConstraints() {
         
