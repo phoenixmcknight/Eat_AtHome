@@ -10,21 +10,34 @@ import UIKit
 
 class ExcludeIngredientViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
+    let excludeIngredientView = IngredientsView()
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+     var onDoneBlock : ((Bool) -> Void)?
+    
+    override func viewDidLoad() {
+            super.viewDidLoad()
+            view.addSubview(excludeIngredientView)
+            addDelegates()
+            excludeIngredientView.changeStateOfView(include: false)
+            // Do any additional setup after loading the view.
+        }
+        
+        override func viewDidDisappear(_ animated: Bool) {
+            super.viewDidDisappear(animated)
+            onDoneBlock!(true)
+        }
+        
+        private func addDelegates() {
+            excludeIngredientView.ingredientsTextField.delegate = self
+        }
+       
     }
-    */
-
-}
+    extension ExcludeIngredientViewController:UITextFieldDelegate {
+        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            guard let ingredientName = textField.text else {return false}
+    excludeIngredientView.createLabel(ingredientName:ingredientName , imageName: ingredientName)
+            
+    excludeIngredientView.delegateTwo?.exlcudeIngredient(isAdding: true, ingredient: ingredientName)
+            return true
+        }
+    }
