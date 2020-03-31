@@ -8,16 +8,16 @@
 
 import UIKit
 
-class IncludeIngredientsView: UIView {
+class ingredientsView: UIView {
 
-    lazy var includeIngredientsTextField:UITextField = {
+    lazy var ingredientsTextField:UITextField = {
         let textField = UITextField()
         textField.placeholder = "Add Ingredients"
         textField.textAlignment = .center
         return textField
     }()
     
-    lazy var outletArray:[UIView] = [self.includeIngredientsTextField]
+    lazy var outletArray:[UIView] = [self.ingredientsTextField]
     
     weak var delegate:IncludeIngredientDelegate?
     
@@ -38,7 +38,7 @@ class IncludeIngredientsView: UIView {
     }
     
     private func addSubviews() {
-        self.addSubview(includeIngredientsTextField)
+        self.addSubview(ingredientsTextField)
     }
     private func configureStackView(newLabel:UIView,newImageView:UIImageView) -> UIStackView {
        let newStackView = UIStackView(arrangedSubviews: [newImageView,newLabel])
@@ -80,8 +80,8 @@ class IncludeIngredientsView: UIView {
         NSLayoutConstraint.activate([
                newView.topAnchor.constraint(equalTo: lastOutlet.bottomAnchor),
                newView.centerXAnchor.constraint(equalTo: lastOutlet.centerXAnchor),
-               newView.heightAnchor.constraint(equalTo: includeIngredientsTextField.heightAnchor),
-                newView.widthAnchor.constraint(equalTo: includeIngredientsTextField.widthAnchor, multiplier: 0.8)
+               newView.heightAnchor.constraint(equalTo: ingredientsTextField.heightAnchor),
+                newView.widthAnchor.constraint(equalTo: ingredientsTextField.widthAnchor, multiplier: 0.8)
                
                ])
     }
@@ -89,8 +89,8 @@ class IncludeIngredientsView: UIView {
     private func newImageViewConstraints(newImageView:UIImageView) {
      
         NSLayoutConstraint.activate([
-               newImageView.heightAnchor.constraint(equalTo: includeIngredientsTextField.heightAnchor),
-               newImageView.widthAnchor.constraint(equalTo: includeIngredientsTextField.widthAnchor, multiplier: 0.2)
+               newImageView.heightAnchor.constraint(equalTo: ingredientsTextField.heightAnchor),
+               newImageView.widthAnchor.constraint(equalTo: ingredientsTextField.widthAnchor, multiplier: 0.2)
               ])
     }
     
@@ -151,7 +151,7 @@ class IncludeIngredientsView: UIView {
        self.addSubview(newView)
         newImageViewConstraints(newImageView: newImageView)
         newViewConstraints(newView: newView, lastOutlet: lastOutlet)
-        newLabel.heightAnchor.constraint(equalTo: includeIngredientsTextField.heightAnchor).isActive = true
+        newLabel.heightAnchor.constraint(equalTo: ingredientsTextField.heightAnchor).isActive = true
         
        outletArray.append(newView)
      
@@ -198,7 +198,7 @@ class IncludeIngredientsView: UIView {
                           UIView.animate(withDuration: 0.2) {
                                card?.layer.borderColor = UIColor.green.cgColor
                             
-                            card?.center.x = self.includeIngredientsTextField.center.x
+                            card?.center.x = self.ingredientsTextField.center.x
                             
                               card?.transform = .identity
                             
@@ -207,7 +207,7 @@ class IncludeIngredientsView: UIView {
                       } else if xFromCenter < 0 && xFromCenter > distanceFromCenterToTheLeft {
                           
                           UIView.animate(withDuration: 0.2) {
-                            card?.center.x = self.includeIngredientsTextField.center.x
+                            card?.center.x = self.ingredientsTextField.center.x
                            
                             card?.layer.borderColor = UIColor.green.cgColor
                             
@@ -266,12 +266,12 @@ class IncludeIngredientsView: UIView {
     
     private func ingredientTextFieldConstraints() {
         
-        includeIngredientsTextField.translatesAutoresizingMaskIntoConstraints = false
+        ingredientsTextField.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            includeIngredientsTextField.topAnchor.constraint(equalTo: self.topAnchor,constant: self.frame.height * 0.025),
-            includeIngredientsTextField.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            includeIngredientsTextField.widthAnchor.constraint(equalTo: self.widthAnchor,multiplier: 0.8),
-            includeIngredientsTextField.heightAnchor.constraint(equalToConstant: self.frame.height * 0.05)
+            ingredientsTextField.topAnchor.constraint(equalTo: self.topAnchor,constant: self.frame.height * 0.025),
+            ingredientsTextField.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            ingredientsTextField.widthAnchor.constraint(equalTo: self.widthAnchor,multiplier: 0.8),
+            ingredientsTextField.heightAnchor.constraint(equalToConstant: self.frame.height * 0.05)
         ])
     }
     
