@@ -101,13 +101,16 @@ extension UIView {
 }
 
 extension UILabel {
-    public convenience init(font:UIFont){
+    public convenience init(text:String){
         self.init()
         self.textAlignment = .center
-        self.textColor = .black
+        self.textColor = StyleGuide.AppColors.backgroundColor
         self.adjustsFontSizeToFitWidth = true
         self.numberOfLines = 0
-        self.font = font
+        self.font = UIFont(name: StyleGuide.FontStyle.fontName, size: StyleGuide.FontStyle.fontSize)
+        self.textColor = StyleGuide.FontStyle.fontColor
+        self.text = text
+        
     }
 }
 
@@ -136,13 +139,13 @@ extension UIViewController {
         self.navigationController?.navigationBar.backgroundColor = .clear
     }
     
-    func add(_ child: UIViewController) {
+    func addChild(_ child: UIViewController) {
         addChild(child)
         view.addSubview(child.view)
         child.didMove(toParent: self)
     }
     
-    func remove() {
+    func removeChild() {
         // Just to be safe, we check that this view controller
         // is actually added to a parent before removing it.
         guard parent != nil else {
@@ -172,7 +175,7 @@ extension UIViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    public func testAlert(controllerTitle:String?, controllerMessage:String?,actionOneTitle:String?, actionTwoTitle:String?,actionOneClosure: ((UIAlertAction) -> ())?,controllerStyle:UIAlertController.Style, actionTwoClosure:((UIAlertAction) -> ())?,actionOneStyle:UIAlertAction.Style,actionTwoStyle:UIAlertAction.Style?) {
+    public func alertWithAction(controllerTitle:String?, controllerMessage:String?,actionOneTitle:String?, actionTwoTitle:String?,actionOneClosure: ((UIAlertAction) -> ())?,controllerStyle:UIAlertController.Style, actionTwoClosure:((UIAlertAction) -> ())?,actionOneStyle:UIAlertAction.Style,actionTwoStyle:UIAlertAction.Style?) {
        
         let alertController = UIAlertController(title: controllerTitle, message: controllerMessage, preferredStyle: controllerStyle)
         
@@ -200,7 +203,7 @@ extension UIViewController {
 
 extension UIBarButtonItem {
 
-    static func barButton(_ target: Any?, action: Selector, imageName: String?, image:UIImage?,systemImageName:String?) -> UIBarButtonItem {
+    static func customBarButton(_ target: Any?, action: Selector, imageName: String?, image:UIImage?,systemImageName:String?) -> UIBarButtonItem {
         let button = UIButton(type: .custom)
         
         
@@ -252,37 +255,4 @@ extension String {
         }
         return formatDate
     }
-    
-    var isValidEmail: Bool {
-        
-        // this pattern requires that an email use the following format:
-        // [something]@[some domain].[some tld]
-        let validEmailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-        
-        let emailPredicate = NSPredicate(format:"SELF MATCHES %@", validEmailRegEx)
-        return emailPredicate.evaluate(with: self)
-    }
-    
-    
-    var isValidPassword: Bool {
-        
-        //this pattern requires that a password has at least one capital letter, one number, one lower case letter, and is at least 8 characters long
-        //let validPasswordRegEx =  "(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}"
-        
-        //this pattern requires that a password be at least 8 characters long
-        let validPasswordRegEx =  "[A-Z0-9a-z!@#$&*.-]{8,}"
-        let passwordPredicate = NSPredicate(format: "SELF MATCHES %@", validPasswordRegEx)
-        return passwordPredicate.evaluate(with: self)
-    }
-    
-    var isConfirmPasswordValid: Bool {
-        //this pattern requires that a password has at least one capital letter, one number, one lower case letter, and is at least 8 characters long
-        //let validPasswordRegEx =  "(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}"
-        
-        //this pattern requires that a password be at least 8 characters long
-        let validPasswordRegEx =  "[A-Z0-9a-z!@#$&*.-]{8,}"
-        let passwordPredicate = NSPredicate(format: "SELF MATCHES %@", validPasswordRegEx)
-        return passwordPredicate.evaluate(with: self)
-    }
-    
 }
