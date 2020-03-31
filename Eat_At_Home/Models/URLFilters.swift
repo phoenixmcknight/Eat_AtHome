@@ -13,7 +13,7 @@ struct URLFilters  {
     let listOfcuisines:[String] = ["African,","American,","British","Cajun,","Caribbean","Chinese,","Eastern+European,","European,","French,","German,","Greek,","Indian,","Irish,","Italian,","Japanese,","Jewish,","Korean,","Latin+American,","Mediterranean,","Mexican,","Middle+Eastern,","Nordic,","Southern,","Spanish,","Thai,","Vietnamese,"]
     
     
-   let listOfFilters:[String] = ["Diet","Intolerances","Exclude Ingredients","Include Ingredients","Max Ready Time","Max Calories"]
+   let listOfFilters:[String] = ["Diet","Intolerances","Exclude Ingredients","Include Ingredients","Ready Time","Max Calories"]
     let listOfDiets:[String] = ["Gluten+Free,","Ketogenic,","Vegetarian,","Lacto-Vegetarian,","Ovo-Vegetarian,","Vegan,","Pescetarian,","Paleo,","Primal,","Whole30,"]
         
     let listOfIntolerances:[String] = ["Dairy,","Egg,","Gluten,","Grain,","Peanut,","Seafood,","Sesame,","Shellfish,","Soy,","Sulfite,","Tree+Nut,","Wheat,"]
