@@ -38,6 +38,7 @@
 		69D767AA242CF62300B06B2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 69D767A9242CF62300B06B2A /* Assets.xcassets */; };
 		69D767AD242CF62300B06B2A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 69D767AB242CF62300B06B2A /* LaunchScreen.storyboard */; };
 		69D767B8242CF62300B06B2A /* Eat_At_HomeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D767B7242CF62300B06B2A /* Eat_At_HomeTests.swift */; };
+		69D868A02432ED1C00F149A2 /* IncludeIngredientsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D8689F2432ED1C00F149A2 /* IncludeIngredientsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,7 @@
 		69D767B3242CF62300B06B2A /* Eat_At_HomeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Eat_At_HomeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		69D767B7242CF62300B06B2A /* Eat_At_HomeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Eat_At_HomeTests.swift; sourceTree = "<group>"; };
 		69D767B9242CF62300B06B2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		69D8689F2432ED1C00F149A2 /* IncludeIngredientsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncludeIngredientsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -224,6 +226,7 @@
 				6902DEE02431A41200649E6E /* FilterCollectionViewCell.swift */,
 				69479F7524325C4D00976E90 /* DietView.swift */,
 				69479F772432A13100976E90 /* IntolerancesView.swift */,
+				69D8689F2432ED1C00F149A2 /* IncludeIngredientsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -362,6 +365,7 @@
 				695FAD33242EAEE000D9AE2F /* Secrets.swift in Sources */,
 				6902DED52430191200649E6E /* Enums.swift in Sources */,
 				695FAD44242ECC3300D9AE2F /* SearchRecipeVC.swift in Sources */,
+				69D868A02432ED1C00F149A2 /* IncludeIngredientsView.swift in Sources */,
 				695FAD4A242EDFF900D9AE2F /* Extensions.swift in Sources */,
 				69479F742432505100976E90 /* DietCollectionViewDelegate.swift in Sources */,
 				695FAD46242EDEF700D9AE2F /* SearchRecipeCollectionViewCell.swift in Sources */,
