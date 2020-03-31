@@ -66,6 +66,22 @@ struct URLFilters  {
         intolerances = intolerances.filter({$0 != intolerance})
     }
     
+    mutating func includeIngredient(ingredient:String) {
+        includeIngredients.append(ingredient)
+    }
+    
+    mutating func removeIngredient(ingredient:String) {
+      includeIngredients =  includeIngredients.filter({$0 != ingredient})
+    }
+    
+    mutating func excludeIngredient(ingredient:String) {
+        excludeIngredients.append(ingredient)
+    }
+    
+    mutating func removeExcludedIngredient(ingredient:String) {
+        excludeIngredients = excludeIngredients.filter({$0 != ingredient})
+    }
+    
     mutating func changeMaxReadyTime(newMaxReadyTime:Int) {
         maxReadyTime = newMaxReadyTime
     }
@@ -95,5 +111,11 @@ struct URLFilters  {
     
     mutating func returnMaxReadyTime() -> String {
         return "&maxReadyTime=\(maxReadyTime)"
+    }
+    mutating func returnIncludeIngredients() -> String {
+        return includeIngredients.joined(separator: ",")
+    }
+    mutating func returnExcludeIngredients() -> String {
+        return excludeIngredients.joined(separator: ",")
     }
 }

@@ -15,3 +15,8 @@ enum RegisterCollectionViewCells:String {
     case diet
     case intolerances
 }
+
+enum IngredientViewState {
+    case include
+    case exclude
+}
