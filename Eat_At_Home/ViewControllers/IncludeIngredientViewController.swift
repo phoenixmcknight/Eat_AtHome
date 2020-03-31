@@ -20,6 +20,7 @@ class IncludeIngredientViewController: UIViewController {
         view.addSubview(ingredientView)
         addDelegates()
         ingredientView.changeStateOfView(include: true)
+        
         // Do any additional setup after loading the view.
     }
     
@@ -36,9 +37,10 @@ class IncludeIngredientViewController: UIViewController {
 extension IncludeIngredientViewController:UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let ingredientName = textField.text else {return false}
+        
 ingredientView.createLabel(ingredientName:ingredientName , imageName: ingredientName)
         
-ingredientView.delegate?.sendIngredient(isAdding: true, ingredient: ingredientName)
+ingredientView.delegateOne?.sendIngredient(isAdding: true, ingredient: ingredientName)
         return true
     }
 }
