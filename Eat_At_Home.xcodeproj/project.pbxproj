@@ -39,6 +39,8 @@
 		69D767AD242CF62300B06B2A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 69D767AB242CF62300B06B2A /* LaunchScreen.storyboard */; };
 		69D767B8242CF62300B06B2A /* Eat_At_HomeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D767B7242CF62300B06B2A /* Eat_At_HomeTests.swift */; };
 		69D868A02432ED1C00F149A2 /* IncludeIngredientsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D8689F2432ED1C00F149A2 /* IncludeIngredientsView.swift */; };
+		69D868A22432FC1900F149A2 /* IngredientViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D868A12432FC1900F149A2 /* IngredientViewController.swift */; };
+		69D868A42432FE5A00F149A2 /* IngredientDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D868A32432FE5A00F149A2 /* IngredientDelegates.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +89,8 @@
 		69D767B7242CF62300B06B2A /* Eat_At_HomeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Eat_At_HomeTests.swift; sourceTree = "<group>"; };
 		69D767B9242CF62300B06B2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		69D8689F2432ED1C00F149A2 /* IncludeIngredientsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncludeIngredientsView.swift; sourceTree = "<group>"; };
+		69D868A12432FC1900F149A2 /* IngredientViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientViewController.swift; sourceTree = "<group>"; };
+		69D868A32432FE5A00F149A2 /* IngredientDelegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientDelegates.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +116,7 @@
 			children = (
 				69479F732432505100976E90 /* DietCollectionViewDelegate.swift */,
 				69479F7B2432A81E00976E90 /* IntoleranceCollectionViewDelegate.swift */,
+				69D868A32432FE5A00F149A2 /* IngredientDelegates.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -238,6 +243,7 @@
 				695FAD43242ECC3300D9AE2F /* SearchRecipeVC.swift */,
 				69D767C7242CF67D00B06B2A /* DetailViewControllers */,
 				69479F792432A5A600976E90 /* IntoleranceViewController.swift */,
+				69D868A12432FC1900F149A2 /* IngredientViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -368,6 +374,7 @@
 				69D868A02432ED1C00F149A2 /* IncludeIngredientsView.swift in Sources */,
 				695FAD4A242EDFF900D9AE2F /* Extensions.swift in Sources */,
 				69479F742432505100976E90 /* DietCollectionViewDelegate.swift in Sources */,
+				69D868A42432FE5A00F149A2 /* IngredientDelegates.swift in Sources */,
 				695FAD46242EDEF700D9AE2F /* SearchRecipeCollectionViewCell.swift in Sources */,
 				69479F7624325C4D00976E90 /* DietView.swift in Sources */,
 				695FAD3B242EAF7E00D9AE2F /* SpoonApiClient.swift in Sources */,
@@ -375,6 +382,7 @@
 				6902DED724301A4C00649E6E /* SearchRecipeSettingsCollectionViewCell.swift in Sources */,
 				6902DED9243111AC00649E6E /* NavigationBarTitleView.swift in Sources */,
 				69479F782432A13100976E90 /* IntolerancesView.swift in Sources */,
+				69D868A22432FC1900F149A2 /* IngredientViewController.swift in Sources */,
 				695FAD39242EAF2300D9AE2F /* NetworkHelper.swift in Sources */,
 				6902DEE12431A41200649E6E /* FilterCollectionViewCell.swift in Sources */,
 				69D767A3242CF62200B06B2A /* SceneDelegate.swift in Sources */,
