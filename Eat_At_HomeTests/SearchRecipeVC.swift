@@ -165,8 +165,28 @@ return cellThree
                                        self.view.alpha = 1.0
                                }
                                
-                               view.alpha = 0.5
+                 view.alpha = 0.5
                                present(intoleranceVC,animated: true)
+                
+            case "Include Ingredients":
+                let ingredientVC = IngredientViewController()
+                                             
+                ingredientVC.ingredientView.delegate = self
+                                             ingredientVC.ingredientView.frame = CGRect(x: 0, y: 0, width: view.frame.width * 0.80, height: view.frame.height / 2)
+                                             ingredientVC.ingredientView.center.x = view.center.x
+                                             ingredientVC.ingredientView.center.y = searchRecipeView.cuisineLabel.center.y - view.frame.height * 0.025
+                                             
+                                             ingredientVC.ingredientView.layer.cornerRadius = 25
+                                             ingredientVC.ingredientView.layer.masksToBounds = true
+                                        
+                                            ingredientVC.modalPresentationStyle = .formSheet
+                                             
+                                             ingredientVC.onDoneBlock = { (result) in
+                                                     self.view.alpha = 1.0
+                                             }
+                                             
+                                             view.alpha = 0.5
+                                             present(ingredientVC,animated: true)
                
             default:
                 print("")
@@ -217,6 +237,24 @@ extension SearchRecipeVC:IntoleranceViewControllerDelegate {
             }
         }
     }
+extension SearchRecipeVC:IncludeIngredientDelegate {
+    func sendIngredient(isAdding: Bool, ingredient: String) {
+        switch isAdding {
+                  case true:
+                    urlFilters.includeIngredient(ingredient: ingredient)
+              case false:
+                urlFilters.removeIngredient(ingredient: ingredient)
+                  }
     
+    }
+}
+
+extension SearchRecipeVC:ExcludeIngredientDelegate {
+    func exlcudeIngredient(isAdding: Bool, ingredient: String) {
+        print("")
+    }
+    
+    
+}
     
 
