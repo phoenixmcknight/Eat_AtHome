@@ -21,9 +21,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
               window?.windowScene = scene
+          
+        let tabBarController = UITabBarController()
+       let search  = UINavigationController(rootViewController: SearchRecipeVC())
+        
+        let cart = UINavigationController(rootViewController: CartViewController())
+        
+        tabBarController.setViewControllers([search,cart], animated: true)
+        
+        let tabBarItemOne:UITabBarItem = UITabBarItem(tabBarSystemItem: UITabBarItem.SystemItem.search, tag: 0)
+        
+        let tabBarItemTwo:UITabBarItem = UITabBarItem(title: "Cart", image: UIImage(systemName: "cart.fill"), tag: 1)
+        
+          
+        
+        search.tabBarItem = tabBarItemOne
+        cart.tabBarItem = tabBarItemTwo
               
-              
-        window?.rootViewController = UINavigationController(rootViewController: SearchRecipeVC())
+        window?.rootViewController = tabBarController
               
               window?.makeKeyAndVisible()
         
