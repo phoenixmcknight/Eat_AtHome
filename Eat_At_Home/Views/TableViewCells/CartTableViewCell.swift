@@ -38,6 +38,8 @@ class CartTableViewCell: UITableViewCell {
         return count
     }()
     
+
+    
     lazy var imageActivityIndc:UIActivityIndicatorView = {
              let act = UIActivityIndicatorView()
              act.hidesWhenStopped = true
