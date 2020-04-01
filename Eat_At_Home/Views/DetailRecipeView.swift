@@ -17,25 +17,18 @@ class DetailRecipeView: UIView {
            let label = UILabel(text: "Food Title Label",fontsize:12)
            return label
        }()
-       
-    lazy var cartStepper:UIStepper = {
-        let step = UIStepper()
-        step.isUserInteractionEnabled = true
-        step.minimumValue = 0
-        step.maximumValue = 5
-        step.wraps = false
-        step.autorepeat = true
-       
-        return step
-    }()
+
        
        lazy var cartLabel:UILabel = {
-           let label  = UILabel(text: "Items In Cart: ",fontsize:12)
+           let label  = UILabel(text: "Add Or Remove From Cart",fontsize:14)
            return label
        }()
        
        lazy var descriptionTextView:UITextView = {
         let descriptionView = UITextView()
+        descriptionView.font = UIFont(name: StyleGuide.FontStyle.fontName, size: 15)
+        descriptionView.backgroundColor = StyleGuide.AppColors.backgroundColor
+        
            
            return descriptionView
        }()
@@ -50,78 +43,65 @@ class DetailRecipeView: UIView {
     
     private func commonInit() {
       addSubviews()
-        foodImageConstraints()
+        foodImageViewConstraints()
         recipeTitleLabelConstraints()
         cartLabelConstraints()
-       stepperConstraints()
-       descriptionConstraints()
-        self.backgroundColor = StyleGuide.AppColors.backgroundColor
-
+        descriptionTextViewConstraints()
+    self.backgroundColor = StyleGuide.AppColors.backgroundColor
     }
- 
     
     private func addSubviews(){
         self.addSubview(foodImageView)
         self.addSubview(recipeTitleLabel)
         self.addSubview(cartLabel)
-        self.addSubview(cartStepper)
         self.addSubview(descriptionTextView)
     }
     
+   
+    private func foodImageViewConstraints() {
+         foodImageView.translatesAutoresizingMaskIntoConstraints = false
+
+         NSLayoutConstraint.activate([
+             foodImageView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+             foodImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+             foodImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+             foodImageView.heightAnchor.constraint(equalTo: self.heightAnchor,multiplier: 0.4)
+         ])
+     }
+
+     private func recipeTitleLabelConstraints() {
+         recipeTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+         NSLayoutConstraint.activate([
+             recipeTitleLabel.topAnchor.constraint(equalTo: foodImageView.bottomAnchor),
+             recipeTitleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+             recipeTitleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+             recipeTitleLabel.heightAnchor.constraint(equalTo: self.heightAnchor,multiplier: 0.02)
+         ])
+     }
+
+
+     private func cartLabelConstraints() {
+         cartLabel.translatesAutoresizingMaskIntoConstraints = false
+
+         NSLayoutConstraint.activate([
+             cartLabel.topAnchor.constraint(equalTo: recipeTitleLabel.bottomAnchor),
+             cartLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+             cartLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.6),
+             cartLabel.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.05)
+         ])
+     }
+
+     private func descriptionTextViewConstraints() {
+         descriptionTextView.translatesAutoresizingMaskIntoConstraints = false
+
+         NSLayoutConstraint.activate([
+             descriptionTextView.topAnchor.constraint(equalTo: cartLabel.bottomAnchor),
+             descriptionTextView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+             descriptionTextView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+             descriptionTextView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+
+         ])
+     }
     
-    private func foodImageConstraints() {
-        foodImageView.translatesAutoresizingMaskIntoConstraints = false
-       
-        NSLayoutConstraint.activate([
-            foodImageView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor,constant: self.frame.height * 0.01),
-            foodImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            foodImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            foodImageView.heightAnchor.constraint(equalTo: self.heightAnchor,multiplier: 0.4)
-        ])
-    }
-    
-    private func recipeTitleLabelConstraints() {
-        recipeTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            recipeTitleLabel.topAnchor.constraint(equalTo: foodImageView.bottomAnchor),
-            recipeTitleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            recipeTitleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            recipeTitleLabel.heightAnchor.constraint(equalTo: self.heightAnchor,multiplier: 0.02)
-        ])
-    }
-    
-    
-    private func cartLabelConstraints() {
-        cartLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            cartLabel.topAnchor.constraint(equalTo: recipeTitleLabel.bottomAnchor),
-            cartLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            cartLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.6),
-            cartLabel.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.05)
-        ])
-    }
-    
-    private func stepperConstraints() {
-        cartStepper.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            cartStepper.leadingAnchor.constraint(equalTo: cartLabel.trailingAnchor,constant: 5),
-            cartStepper.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.025),
-            cartStepper.centerYAnchor.constraint(equalTo: cartLabel.centerYAnchor),
-            cartStepper.heightAnchor.constraint(equalTo: cartLabel.heightAnchor,multiplier: 0.6)
-        ])
-    }
-    
-    
-    private func descriptionConstraints() {
-        descriptionTextView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            descriptionTextView.topAnchor.constraint(equalTo: cartStepper.bottomAnchor),
-            descriptionTextView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            descriptionTextView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            descriptionTextView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-            
-        ])
-    }
+
 }

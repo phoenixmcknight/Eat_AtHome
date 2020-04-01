@@ -14,6 +14,7 @@ class IngredientsView: UIView {
         let textField = UITextField()
         textField.placeholder = "Add Ingredients"
         textField.textAlignment = .center
+        textField.borderStyle = .roundedRect
         return textField
     }()
     
@@ -48,7 +49,7 @@ class IngredientsView: UIView {
         addSubviews()
         scrollyViewConstraints()
         ingredientTextFieldConstraints()
-        self.backgroundColor = .white
+        self.backgroundColor = StyleGuide.AppColors.backgroundColor
     }
     
     private func addSubviews() {
