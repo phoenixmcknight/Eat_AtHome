@@ -18,6 +18,7 @@ class SearchRecipeVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(searchRecipeView)
+       
         addDelegates()
         setUpNavigationBar()
         addTargetToViewButtons()
@@ -54,7 +55,7 @@ class SearchRecipeVC: UIViewController {
     }
     
     private func addTargetToViewButtons() {
-        searchRecipeView.buttonNameTBD.addTarget(self, action: #selector(search), for: .touchUpInside)
+        searchRecipeView.searchButton.addTarget(self, action: #selector(search), for: .touchUpInside)
     }
     
     @objc private func navigateToSearchBar()
@@ -67,14 +68,18 @@ class SearchRecipeVC: UIViewController {
     @objc private func search() {
        let searchResultVC = SearchResultViewController()
     
-        
+        searchRecipeView.customActivityIndictator.startAnimating()
         SpoonAPIClient.client.getRecipes(query: searchRecipeView.mainSearchRecipeBar.text ?? "", cuisine: urlFilters.returnCuisines(), diet: urlFilters.returnDiets(), excludeIngredients: urlFilters.returnExcludeIngredients(), intolerances: urlFilters.returnExcludeIngredients(), includeIngredients: urlFilters.returnIncludeIngredients(), type: urlFilters.returnDishTypes(), maxReadyTime: urlFilters.returnMaxReadyTime(), maxCalories: urlFilters.returnMaxCalories(),sortedBy: "&sort=newest") { [weak self] (result) in
             switch result {
             case .failure( _):
+                self?.searchRecipeView.customActivityIndictator.stopAnimating()
                 self?.showAlert(title: "Error", message: "Could Not Load Events")
             case .success(let recipes):
+                self?.searchRecipeView.customActivityIndictator.stopAnimating()
+
                 searchResultVC.recipeArray = recipes
                 searchResultVC.resultURLFilter = self?.urlFilters
+                searchResultVC.currentQuery = self?.searchRecipeView.mainSearchRecipeBar.text ?? ""
                 self?.navigationController?.pushViewController(searchResultVC, animated: true)
             
             }
