@@ -287,6 +287,7 @@ extension SearchRecipeVC:UICollectionViewDataSource,UICollectionViewDelegate
             
             let currentDishType = urlFilters.listOfDishTypes[indexPath.item]
             
+            print("this is the tag",collectionView.tag)
             
             if selectedCell.hasBeenSelected == true {
                 urlFilters.removeDishType(dishType: currentDishType)

@@ -16,10 +16,6 @@ extension CALayer{
     }
 }
 
-extension UIImageView {
-    
-}
-
 extension UNNotification {
     static func configureNotifications(title: String, body: String, time: Double,categoryIdentifier:String){
         let center = UNUserNotificationCenter.current()

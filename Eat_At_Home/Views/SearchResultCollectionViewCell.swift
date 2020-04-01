@@ -8,13 +8,7 @@
 
 import UIKit
 
-protocol SearchResultCellDelegate:AnyObject {
-    func navigateToDetailVC(tag:Int)
-}
-
 class SearchResultCollectionViewCell: UICollectionViewCell {
-    
-    weak var delegate:SearchResultCellDelegate?
     
    lazy var foodImageView:UIImageView =
           {
@@ -65,7 +59,7 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
              button.backgroundColor = StyleGuide.ButtonStyle.backgroundColor
              button.layer.cornerRadius = StyleGuide.ButtonStyle.cornerRadius
              button.layer.borderColor = StyleGuide.ButtonStyle.borderColor
-        button.addTarget(self, action: #selector(buttonTapped(sender:)), for: .touchUpInside)
+            
         return button
     }()
     
@@ -124,10 +118,6 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
             foodImageView.heightAnchor.constraint(equalTo: self.heightAnchor,multiplier: 0.4),
             foodImageView.widthAnchor.constraint(equalTo: self.heightAnchor,multiplier: 0.4)
         ])
-    }
-    
-    @objc private func buttonTapped(sender:UIButton) {
-        delegate?.navigateToDetailVC(tag: sender.tag)
     }
     
     private func recipeLabelConstraints() {
