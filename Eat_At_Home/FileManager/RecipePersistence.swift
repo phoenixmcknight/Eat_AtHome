@@ -2,8 +2,8 @@
 
 import Foundation
 
-struct VenueCollectionPersistenceManager {
-    static let manager = VenueCollectionPersistenceManager()
+struct RecipePersistenceManager {
+    static let manager = RecipePersistenceManager()
 
     func save(newRecipe: Recipe) throws {
         try persistenceHelper.save(newElement: newRecipe)
@@ -16,7 +16,15 @@ struct VenueCollectionPersistenceManager {
 
     func deleteRecipe(recipeID:Int) throws {
         do {
-            let letNewRecipeArray = try getSavedRecipes().filter({$0.id != recipeID})
+//            var letNewRecipeArray = try getSavedRecipes().filter({$0.id != recipeID})
+             var letNewRecipeArray = try getSavedRecipes()
+           
+            for (i,v) in letNewRecipeArray.enumerated() {
+                if v.id == recipeID {
+                letNewRecipeArray.remove(at: i)
+                    break
+                }
+            }
             try persistenceHelper.replace(elements: letNewRecipeArray)
 
         } catch {
