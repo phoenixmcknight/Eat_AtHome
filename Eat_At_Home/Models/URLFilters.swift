@@ -18,9 +18,9 @@ struct URLFilters  {
         
     let listOfIntolerances:[String] = ["Dairy,","Egg,","Gluten,","Grain,","Peanut,","Seafood,","Sesame,","Shellfish,","Soy,","Sulfite,","Tree+Nut,","Wheat,"]
     
-  private var excludeIngredients:[String] = []
+  private var excludeIngredients:[String] = ["&excludeIngredients="]
     
-   private var includeIngredients:[String] = []
+   private var includeIngredients:[String] = ["&includeIngredients="]
     
    private var maxReadyTime:Int = 1000
     
@@ -90,32 +90,33 @@ struct URLFilters  {
         maxCalories = newMaxCalories
     }
     
-    mutating func returnDishTypes() -> String {
+     func returnDishTypes() -> String {
       return dishTypes.joined()
     }
     
-    mutating func returnCuisines() -> String {
+     func returnCuisines() -> String {
         return cuisines.joined()
     }
-    mutating func returnDiets() -> String {
+     func returnDiets() -> String {
         return diets.joined()
     }
     
-    mutating func returnIntolerances() -> String {
+     func returnIntolerances() -> String {
         return intolerances.joined()
     }
     
-    mutating func returnMaxCalories() -> String {
+     func returnMaxCalories() -> String {
     return "&maxCalories=\(maxCalories)"
     }
     
-    mutating func returnMaxReadyTime() -> String {
+     func returnMaxReadyTime() -> String {
         return "&maxReadyTime=\(maxReadyTime)"
     }
-    mutating func returnIncludeIngredients() -> String {
+     func returnIncludeIngredients() -> String {
         return includeIngredients.joined(separator: ",")
     }
-    mutating func returnExcludeIngredients() -> String {
+     func returnExcludeIngredients() -> String {
         return excludeIngredients.joined(separator: ",")
     }
+    
 }
