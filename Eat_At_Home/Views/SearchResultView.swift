@@ -62,6 +62,9 @@ class SearchResultView: UIView {
            return button
        }()
     
+    lazy var customActivityIndictator = CustomIndictator(frame: .zero)
+
+    
     lazy var buttonStackView:UIStackView = {
         let stack = UIStackView(arrangedSubviews: [self.buttonOne,self.buttonTwo])
         stack.alignment = .center
@@ -85,6 +88,8 @@ class SearchResultView: UIView {
         queryLabelConstraints()
         buttonStackConstraints()
         resultCollectionViewConstraints()
+        customActivityIndictator.setToCenter(view: self, sizeRelativeToView: 0.2)
+        self.setGradientBackground(colorTop: StyleGuide.AppColors.backgroundColor, colorBottom: StyleGuide.AppColors.accentColor)
     }
     
     private func addSubviews() {
