@@ -49,7 +49,7 @@ class IntolerancesView: UIView {
             intoleranceLabelConstraints()
             intoleranceCollectionViewConstraints()
             self.backgroundColor = StyleGuide.AppColors.backgroundColor
-           
+            
         }
         
         private func addSubviews() {
