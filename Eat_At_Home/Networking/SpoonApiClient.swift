@@ -14,9 +14,9 @@ class SpoonAPIClient {
     {
     
         //change &number when you finish testing
-        let urlStr = "https://api.spoonacular.com/recipes/complexSearch?apiKey=\(Secrets.spoonApiKey)&addRecipeInformation=true&instructionsRequired=true&author&number=10\(keyWord.replacingOccurrences(of: " ", with: "+"))\(cuisine)\(diet)\(excludeIngredients)\(includeIngredients)\(intolerances)\(course)\(maxReadyTime)\(maxCalories)\(sortedBy)"
+        let urlStr = "https://api.spoonacular.com/recipes/complexSearch?apiKey=\(Secrets.spoonApiKey)&addRecipeInformation=true&instructionsRequired=true&author&number=2\(keyWord.replacingOccurrences(of: " ", with: "+"))\(cuisine)\(diet)\(excludeIngredients)\(includeIngredients)\(intolerances)\(course)\(maxReadyTime)\(maxCalories)\(sortedBy)"
         
-        //https://api.spoonacular.com/recipes/complexSearch?apiKey=b6238119cfc143cdba64e3cc15163b10&instructionsRequired=true&addRecipeInformation=true&sort=newest&numer=10&author&main+course=dinner
+
         
         guard let url = URL(string: urlStr) else {
             completionHandler(.failure(.badURL))
