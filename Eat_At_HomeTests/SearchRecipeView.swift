@@ -67,6 +67,9 @@ class SearchRecipeView: UIView {
                         layout.scrollDirection = .horizontal
                         let cuisine = UICollectionView(frame: UIScreen.main.bounds, collectionViewLayout: layout)
                         cuisine.backgroundColor = .clear
+           
+           
+            cuisine.tag = 1
             cuisine.register(SearchRecipeCourseAndCuisineCollectionViewCell.self, forCellWithReuseIdentifier: RegisterCollectionViewCells.cuisine.rawValue)
                         return cuisine
                
