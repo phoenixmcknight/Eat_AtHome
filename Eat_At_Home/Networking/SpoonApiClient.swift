@@ -10,11 +10,13 @@ class SpoonAPIClient {
     return "https://spoonacular.com/cdn/ingredients_500x500/\(ingredientName)"
     }
     
-    func getRecipes(query keyWord:String,cuisine:String,diet:String,excludeIngredients:String,intolerances:String,includeIngredients:String,type course:String,maxReadyTime:Int,maxCalories:Int, completionHandler:@escaping(Result<[Recipe],AppError>)-> Void)
+    func getRecipes(query keyWord:String,cuisine:String,diet:String,excludeIngredients:String,intolerances:String,includeIngredients:String,type course:String,maxReadyTime:String,maxCalories:String,sortedBy:String, completionHandler:@escaping(Result<[Recipe],AppError>)-> Void)
     {
     
         //change &number when you finish testing
-        let urlStr = "https://api.spoonacular.com/recipes/complexSearch?apiKey=\(Secrets.spoonApiKey)&instructionsRequired=true&author&number=10\(keyWord.replacingOccurrences(of: " ", with: "+"))\(cuisine)\(diet)\(excludeIngredients)\(includeIngredients)\(intolerances)\(course)\(maxReadyTime)\(maxCalories)"
+        let urlStr = "https://api.spoonacular.com/recipes/complexSearch?apiKey=\(Secrets.spoonApiKey)&addRecipeInformation=true&instructionsRequired=true&author&number=10\(keyWord.replacingOccurrences(of: " ", with: "+"))\(cuisine)\(diet)\(excludeIngredients)\(includeIngredients)\(intolerances)\(course)\(maxReadyTime)\(maxCalories)\(sortedBy)"
+        
+        //https://api.spoonacular.com/recipes/complexSearch?apiKey=b6238119cfc143cdba64e3cc15163b10&instructionsRequired=true&addRecipeInformation=true&sort=newest&numer=10&author&main+course=dinner
         
         guard let url = URL(string: urlStr) else {
             completionHandler(.failure(.badURL))
