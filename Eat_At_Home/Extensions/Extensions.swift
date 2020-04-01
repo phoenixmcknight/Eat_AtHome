@@ -40,42 +40,6 @@ extension UNNotification {
     }
 }
 
-//extension UIImageView {
-
-//    func getImage(with urlString: String, completion: @escaping (Result<UIImage, AppError>) -> ()) {
-//        let activityIndicator = UIActivityIndicatorView(style: .large)
-//        activityIndicator.color = .orange
-//        activityIndicator.startAnimating()
-//        activityIndicator.hidesWhenStopped = true
-//        activityIndicator.center = center
-//        addSubview(activityIndicator)
-//        
-//        guard let url = URL(string: urlString) else {
-//            completion(.failure(.badURL))
-//            return
-//        }
-//        
-//        let request = URLRequest(url: url)
-//        
-//        NetworkHelper.manager.performDataTask(withUrl: url, andMethod: .get) { [weak self] (result) in
-//            DispatchQueue.main.async {
-//                
-//            
-//            switch result {
-//            case .failure(let appError):
-//               activityIndicator.stopAnimating()
-//               completion(.failure(.notAnImage))
-//            case .success(let data):
-//                activityIndicator.stopAnimating()
-//                
-//                if let image = UIImage(data: data) {
-//                    completion(.success(image))
-//                }
-//            }
-//        }
-//    }
-//}
-//}
 
 extension UIView {
     func setGradientBackground(colorTop: UIColor, colorBottom: UIColor) {
@@ -100,14 +64,15 @@ extension UIView {
 
 }
 
+
 extension UILabel {
-    public convenience init(text:String){
+    public convenience init(text:String,fontsize:CGFloat){
         self.init()
         self.textAlignment = .center
         self.textColor = StyleGuide.AppColors.backgroundColor
         self.adjustsFontSizeToFitWidth = true
         self.numberOfLines = 0
-        self.font = UIFont(name: StyleGuide.FontStyle.fontName, size: StyleGuide.FontStyle.fontSize)
+        self.font = UIFont(name: StyleGuide.FontStyle.fontName, size: fontsize)
         self.textColor = StyleGuide.FontStyle.fontColor
         self.text = text
         
