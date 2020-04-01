@@ -122,7 +122,8 @@ extension SearchResultViewController:UICollectionViewDataSource,UICollectionView
         } else {
             cell.servingsLabel.text = "Servings: Unavailable"
         }
-       
+        cell.viewRecipeButton.tag = indexPath.item
+        cell.delegate = self
         cell.imageActivityIndc.startAnimating()
         
         if let image = currentRecipe.image {
@@ -143,6 +144,7 @@ extension SearchResultViewController:UICollectionViewDataSource,UICollectionView
         return cell
         
     }
+    
 }
 
 extension SearchResultViewController:UICollectionViewDelegateFlowLayout {
@@ -169,4 +171,16 @@ extension SearchResultViewController:UISearchBarDelegate {
             }
         }
     }
+}
+extension SearchResultViewController:SearchResultCellDelegate {
+    func navigateToDetailVC(tag: Int) {
+          let detailVC = DetailRecipeViewController()
+        guard let selectedCell = searchResultView.resultCollectionView.cellForItem(at: IndexPath(item: tag, section: 0)) as? SearchResultCollectionViewCell else {return}
+              detailVC.recipeImage = selectedCell.foodImageView.image ?? UIImage(named:"Italian")!
+              detailVC.recipe = recipeArray[tag]
+              navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
+  
+    
 }
