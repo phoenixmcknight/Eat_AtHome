@@ -16,7 +16,11 @@ struct RecipeWrapper: Codable {
 }
 
 // MARK: - Result
-struct Recipe: Codable {
+struct Recipe: Codable,Hashable {
+    static func == (lhs: Recipe, rhs: Recipe) -> Bool {
+      return  lhs.id == rhs.id
+    }
+    
    
     let sourceUrl: String?
     let spoonacularSourceUrl: String?
@@ -28,7 +32,7 @@ struct Recipe: Codable {
     let readyInMinutes, servings: Int?
     let image: String?
     let summary: String?
-    let analyzedInstructions: [AnalyzedInstruction]?
+  //  let analyzedInstructions: [AnalyzedInstruction]?
     let preparationMinutes, cookingMinutes: Int?
     
     static func getRecipeData(data:Data)throws -> [Recipe]? {
@@ -45,13 +49,13 @@ struct Recipe: Codable {
 }
 
 // MARK: - AnalyzedInstruction
-struct AnalyzedInstruction: Codable {
-    let name: String
-    let steps: [Step]
-}
+//struct AnalyzedInstruction: Codable {
+//    let name: String
+//    let steps: [Step]
+//}
 
 // MARK: - Step
-struct Step: Codable {
-    let number: Int
-    let step: String
-}
+//struct Step: Codable {
+//    let number: Int
+//    let step: String
+//}
