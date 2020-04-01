@@ -10,12 +10,33 @@ import UIKit
 
 class EmptyCartView: UIView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    lazy var emptyCartImageView:UIImageView = {
+       let empty = UIImageView()
+        
+        empty.image = UIImage(named: "empty_Cart")!
+        empty.contentMode = .scaleAspectFill
+        return empty
+    }()
+   
+    
+    override init(frame: CGRect) {
+        super.init(frame: UIScreen.main.bounds)
+        self.addSubview(emptyCartImageView)
+        emptyCartConstraints()
     }
-    */
-
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func emptyCartConstraints() {
+          emptyCartImageView.translatesAutoresizingMaskIntoConstraints = false
+          NSLayoutConstraint.activate([
+              emptyCartImageView.topAnchor.constraint(equalTo: self.topAnchor),
+              emptyCartImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+              emptyCartImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+              emptyCartImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+          ])
+      }
+    
 }
