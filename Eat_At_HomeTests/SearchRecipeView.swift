@@ -10,7 +10,6 @@ import UIKit
 
 class SearchRecipeView: UIView {
     
-    //include cuisine and diet in settings
    
 
     lazy var mainSearchRecipeBar:UISearchBar =
@@ -19,24 +18,9 @@ class SearchRecipeView: UIView {
             main.placeholder = "Find a Recipe"
             return main
     }()
-//
-//    lazy var includeIngredientSearchBar:UISearchBar =
-//        {
-//
-//            let include = UISearchBar()
-//                       include.placeholder = "Include Ingredients"
-//
-//                   return include
-//     }()
-//
-//
-//    lazy var excludeIngredientSearchBar:UISearchBar =
-//        {
-//         let include = UISearchBar()
-//             include.placeholder = "Include Ingredients"
-//
-//         return include
-//     }()
+    
+    lazy var customActivityIndictator = CustomIndictator(frame: .zero)
+
     
     lazy var dishTypeCollectionView:UICollectionView =
         {
@@ -123,12 +107,13 @@ class SearchRecipeView: UIView {
                return label
        }()
     
-    lazy var buttonNameTBD:UIButton =
+    lazy var searchButton:UIButton =
         {
     let button = UIButton()
-        button.setTitle("Enter", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
-        button.backgroundColor = .black
+        button.setTitle("Search", for: .normal)
+            button.setTitleColor(StyleGuide.AppColors.backgroundColor, for: .normal)
+            button.layer.borderWidth = 2
+            button.layer.cornerRadius = 3
             
 return button
     }()
@@ -158,7 +143,8 @@ return button
         filterLabelConstraints()
         settingsCollectionViewConstraints()
         buttonConstraints()
-        self.setGradientBackground(colorTop: StyleGuide.AppColors.backgroundColor, colorBottom: StyleGuide.AppColors.accentColor)
+        self.setGradientBackground(colorTop: StyleGuide.AppColors.backgroundColor, colorBottom: #colorLiteral(red: 0.4716594219, green: 0.01316980645, blue: 0, alpha: 1))
+        customActivityIndictator.setToCenter(view: self, sizeRelativeToView: 0.3)
     }
     
     private func addSubviews()
@@ -169,10 +155,11 @@ return button
         self.addSubview(cuisineCollectionView)
         self.addSubview(SettingsLabel)
         self.addSubview(settingsCollectionView)
-        self.addSubview(buttonNameTBD)
-        
+        self.addSubview(searchButton)
+        self.addSubview(customActivityIndictator)
     }
     
+   
     private func dishTypeLabelConstraints()
     {
         dishTypeLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -249,12 +236,13 @@ return button
     
     private func buttonConstraints()
     {
-        buttonNameTBD.translatesAutoresizingMaskIntoConstraints = false
+        searchButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            buttonNameTBD.topAnchor.constraint(equalTo: settingsCollectionView.bottomAnchor),
-            buttonNameTBD.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            buttonNameTBD.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.5),
-            buttonNameTBD.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.075)
+            searchButton.topAnchor.constraint(equalTo: settingsCollectionView.bottomAnchor),
+            searchButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            searchButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.5),
+          //  buttonNameTBD.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.075)
+            searchButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor,constant: -UIScreen.main.bounds.height * 0.01)
             
         ])
     }

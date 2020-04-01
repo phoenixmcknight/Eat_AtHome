@@ -13,7 +13,7 @@ class SearchResultViewController: UIViewController {
     }
     private var currentSortMethod:String = "&sort=newest"
     
-    private var currentQuery:String = ""
+     var currentQuery:String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +24,9 @@ class SearchResultViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-
+    override func viewDidAppear(_ animated: Bool) {
+        navigationItem.title = currentQuery
+    }
     
     private func setDelegatesToSelf() {
         searchResultView.resultCollectionView.delegate = self
@@ -45,25 +47,31 @@ class SearchResultViewController: UIViewController {
     
     @objc private func sortByNewest() {
       currentSortMethod = "&sort=newest"
+        searchResultView.customActivityIndictator.startAnimating()
         SpoonAPIClient.client.getRecipes(query: currentQuery, cuisine: resultURLFilter.returnCuisines(), diet: resultURLFilter.returnDiets(), excludeIngredients: resultURLFilter.returnExcludeIngredients(), intolerances: resultURLFilter.returnExcludeIngredients(), includeIngredients: resultURLFilter.returnIncludeIngredients(), type: resultURLFilter.returnDishTypes(), maxReadyTime: resultURLFilter.returnMaxReadyTime(), maxCalories: resultURLFilter.returnMaxCalories(),sortedBy: currentSortMethod){ [weak self] (result) in
                   switch result {
                   case .failure(let error):
+                    self?.searchResultView.customActivityIndictator.stopAnimating()
                       print(error)
                   case .success(let recipes):
                       self?.recipeArray = recipes
+                      self?.searchResultView.customActivityIndictator.stopAnimating()
                   }
               }
         
     }
     
     @objc private func sortByPrice() {
+        searchResultView.customActivityIndictator.startAnimating()
         currentSortMethod = "&sort=price"
                SpoonAPIClient.client.getRecipes(query: currentQuery, cuisine: resultURLFilter.returnCuisines(), diet: resultURLFilter.returnDiets(), excludeIngredients: resultURLFilter.returnExcludeIngredients(), intolerances: resultURLFilter.returnExcludeIngredients(), includeIngredients: resultURLFilter.returnIncludeIngredients(), type: resultURLFilter.returnDishTypes(), maxReadyTime: resultURLFilter.returnMaxReadyTime(), maxCalories: resultURLFilter.returnMaxCalories(),sortedBy: currentSortMethod){ [weak self] (result) in
                          switch result {
                          case .failure(let error):
                              print(error)
+                             self?.searchResultView.customActivityIndictator.stopAnimating()
                          case .success(let recipes):
                              self?.recipeArray = recipes
+                             self?.searchResultView.customActivityIndictator.stopAnimating()
                          }
                      }
     }
@@ -79,9 +87,7 @@ class SearchResultViewController: UIViewController {
            
            
        }
-    private func changeSearchURL(query:String) {
-        
-    }
+    
     
 }
 extension SearchResultViewController:UICollectionViewDataSource,UICollectionViewDelegate {
@@ -153,13 +159,17 @@ extension SearchResultViewController:UICollectionViewDelegateFlowLayout {
 extension SearchResultViewController:UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text else {return}
+        searchResultView.customActivityIndictator.startAnimating()
         currentQuery = text
         SpoonAPIClient.client.getRecipes(query: text, cuisine: resultURLFilter.returnCuisines(), diet: resultURLFilter.returnDiets(), excludeIngredients: resultURLFilter.returnExcludeIngredients(), intolerances: resultURLFilter.returnExcludeIngredients(), includeIngredients: resultURLFilter.returnIncludeIngredients(), type: resultURLFilter.returnDishTypes(), maxReadyTime: resultURLFilter.returnMaxReadyTime(), maxCalories: resultURLFilter.returnMaxCalories(),sortedBy: currentSortMethod){ [weak self] (result) in
             switch result {
             case .failure(let error):
                 print(error)
+                self?.searchResultView.customActivityIndictator.stopAnimating()
             case .success(let recipes):
                 self?.recipeArray = recipes
+                self?.searchResultView.customActivityIndictator.stopAnimating()
+
             }
         }
     }
@@ -167,9 +177,12 @@ extension SearchResultViewController:UISearchBarDelegate {
 extension SearchResultViewController:SearchResultCellDelegate {
     func navigateToDetailVC(tag: Int) {
           let detailVC = DetailRecipeViewController()
+        
+        searchResultView.customActivityIndictator.startAnimating()
         guard let selectedCell = searchResultView.resultCollectionView.cellForItem(at: IndexPath(item: tag, section: 0)) as? SearchResultCollectionViewCell else {return}
               detailVC.recipeImage = selectedCell.foodImageView.image ?? UIImage(named:"Italian")!
               detailVC.recipe = recipeArray[tag]
+        searchResultView.customActivityIndictator.stopAnimating()
               navigationController?.pushViewController(detailVC, animated: true)
     }
     
