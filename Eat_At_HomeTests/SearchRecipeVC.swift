@@ -1,11 +1,3 @@
-//
-//  SearchRecipeVC.swift
-//  Eat_At_Home
-//
-//  Created by Phoenix McKnight on 3/27/20.
-//  Copyright © 2020 Phoenix McKnight. All rights reserved.
-//
-
 import UIKit
 
 class SearchRecipeVC: UIViewController {
@@ -287,7 +279,6 @@ extension SearchRecipeVC:UICollectionViewDataSource,UICollectionViewDelegate
             
             let currentDishType = urlFilters.listOfDishTypes[indexPath.item]
             
-            print("this is the tag",collectionView.tag)
             
             if selectedCell.hasBeenSelected == true {
                 urlFilters.removeDishType(dishType: currentDishType)
@@ -381,5 +372,3 @@ extension SearchRecipeVC:CaloriesDelegate {
     
     
 }
-
-
