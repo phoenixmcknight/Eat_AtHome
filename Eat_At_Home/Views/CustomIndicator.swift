@@ -26,7 +26,7 @@ class CustomIndictator: UIImageView {
     private func setUpIndicator() {
          self.contentMode = .scaleAspectFit
          self.clipsToBounds = true
-         self.image = UIImage(named:"splashLogo")
+         self.image = UIImage(named:"pursuit-logo")
          self.isHidden = true
     }
     public func setToCenter(view:UIView, sizeRelativeToView:CGFloat) {
