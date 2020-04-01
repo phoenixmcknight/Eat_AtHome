@@ -64,6 +64,8 @@ class FilterCollectionViewCell: UICollectionViewCell {
         dietImageViewConstraints()
         dietLabelConstraints()
         activityIndicatorConstraints()
+        self.layer.borderColor = StyleGuide.AppColors.accentColor.cgColor
+        self.layer.borderWidth = 4
     }
     
     
