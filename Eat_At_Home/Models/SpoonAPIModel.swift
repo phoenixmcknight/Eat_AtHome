@@ -13,6 +13,15 @@ import Foundation
 struct RecipeWrapper: Codable {
     let results: [Recipe]
     let number,totalResults: Int
+    
+    static func getRecipeWrapper(data:Data) -> RecipeWrapper? {
+        do {
+            let recipeWrapperData = try JSONDecoder().decode(RecipeWrapper.self, from: data)
+            return recipeWrapperData
+        } catch {
+            return nil
+        }
+    }
 }
 
 // MARK: - Result
@@ -31,7 +40,11 @@ struct Recipe: Codable,Hashable {
     let title: String?
     let readyInMinutes, servings: Int?
     let image: String?
-    let summary: String?
+    var summary: String?
+    var formattedSummary:String {
+    
+        return summary?.replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "/a>", with: "").replacingOccurrences(of: "<b>", with: "") ?? ""
+    }
   //  let analyzedInstructions: [AnalyzedInstruction]?
     let preparationMinutes, cookingMinutes: Int?
     

@@ -12,7 +12,7 @@ class CaloriesViewController: UIViewController {
      
         let cellSpacingHeight: CGFloat = 10
         
-        weak var delegate:CaloriesDelegate?
+        weak var delegate:FilterDelegate?
         
         var genericCalories:[(String,Int)] = [] {
             didSet {
@@ -40,7 +40,7 @@ class CaloriesViewController: UIViewController {
         private func giveValueToGenericTimes() {
             
             
-            let calorieArray = [("Snack", 100),("Light Meal",300),("Average Meal",500),("Heavy Meal",850),("Are You Sure About That?", 1200),("Slow Down, Buddy", 1500),("Just Go For It",2500)]
+            let calorieArray = [("Snack", 100),("Light Meal",300),("Average Meal",500),("Heavy Meal",850),("Heavy Meal+", 1200)]
             genericCalories = calorieArray
         }
         
@@ -76,38 +76,34 @@ class CaloriesViewController: UIViewController {
         // create a cell for each table view row
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-            guard let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "generic") else {return UITableViewCell()}
+            guard let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "generic") as? CalorieAndTimeFilterTableViewCell else {return UITableViewCell()}
 
             let genericCalorie = genericCalories[indexPath.section]
             
             cell.textLabel?.text = genericCalorie.0 + " - \(genericCalorie.1) Calories"
-
-            cell.backgroundColor = UIColor.white
-            cell.layer.borderColor = UIColor.black.cgColor
-            cell.layer.borderWidth = 1
-            cell.layer.cornerRadius = 5
-            cell.clipsToBounds = true
 
             return cell
         }
 
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             
-            let selectedCell = tableView.cellForRow(at: indexPath)
+            guard let selectedCell = tableView.cellForRow(at: indexPath) as? CalorieAndTimeFilterTableViewCell else {return}
             
-            for cell in 0...6 {
-                if tableView.cellForRow(at: IndexPath(row: 0, section: cell)) == selectedCell {
-                    selectedCell?.layer.borderColor = UIColor.green.cgColor
-                    selectedCell?.layer.borderWidth = 5
-                } else {
-                    tableView.cellForRow(at: IndexPath(row: 0, section: cell))?.layer.borderColor = UIColor.black.cgColor
-                    tableView.cellForRow(at: IndexPath(row: 0, section: cell))?.layer.borderWidth = 1
-                }
+            
+            switch selectedCell.hasBeenSelected {
+            case true:
+                delegate?.sendFilter(addOrRemove: .remove, filterString: nil, filterNumber: genericCalories[indexPath.section].1, filter: .calories)
+            case false:
+                delegate?.sendFilter(addOrRemove: .add, filterString: nil, filterNumber: nil, filter: .calories)
             }
             
-            delegate?.sendCalories(calories: genericCalories[indexPath.section].1)
-         
-         
+            delegate?.sendFilter(addOrRemove: .add, filterString: nil, filterNumber: genericCalories[indexPath.section].1, filter: .calories)
         }
         
     }
+
+extension CaloriesViewController {
+    func configureTableViewCell(cell:UITableViewCell) {
+        
+    }
+}

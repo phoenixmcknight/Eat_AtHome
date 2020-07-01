@@ -6,14 +6,9 @@ class SearchResultViewController: UIViewController {
     
     var resultURLFilter:URLFilters!
     
-    var recipeArray:[Recipe] = [] {
-        didSet {
-            searchResultView.resultCollectionView.reloadData()
-        }
-    }
-    private var currentSortMethod:String = "&sort=newest"
+    var searchResultViewModel:RecipeViewModel!
     
-     var currentQuery:String = ""
+    var searchQuery:String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,21 +16,29 @@ class SearchResultViewController: UIViewController {
         setDelegatesToSelf()
         setUpNavigationBar()
         addTargetToButtons()
+       
+        let request = RecipeRequestParameters.from(urlFilters: resultURLFilter)
+        searchResultViewModel = RecipeViewModel(request: request, delegate: self, searchQuery: searchQuery)
+        
+        
+        searchResultViewModel.fetchRecipes()
         // Do any additional setup after loading the view.
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        navigationItem.title = currentQuery
+        navigationItem.title = searchQuery?.capitalized
     }
     
     private func setDelegatesToSelf() {
         searchResultView.resultCollectionView.delegate = self
         searchResultView.resultCollectionView.dataSource = self
+        searchResultView.resultCollectionView.prefetchDataSource = self
     }
     
     private func addTargetToButtons() {
-        searchResultView.buttonOne.addTarget(self, action: #selector(sortByNewest), for: .touchUpInside)
-        searchResultView.buttonTwo.addTarget(self, action: #selector(sortByPrice), for: .touchUpInside)
+        searchResultView.buttonOne.addTarget(self, action: #selector(sortMethod(sender:)), for: .touchUpInside)
+        searchResultView.buttonTwo.addTarget(self, action: #selector(sortMethod(sender:)), for: .touchUpInside)
+        searchResultView.buttonThree.addTarget(self, action: #selector(sortMethod(sender:)), for: .touchUpInside)
     }
     
     
@@ -45,35 +48,22 @@ class SearchResultViewController: UIViewController {
            navigationItem.rightBarButtonItem = nil
        }
     
-    @objc private func sortByNewest() {
-      currentSortMethod = "&sort=newest"
+    
+    @objc private func sortMethod(sender:UIButton) {
         searchResultView.customActivityIndictator.startAnimating()
-        SpoonAPIClient.client.getRecipes(query: currentQuery, cuisine: resultURLFilter.returnCuisines(), diet: resultURLFilter.returnDiets(), excludeIngredients: resultURLFilter.returnExcludeIngredients(), intolerances: resultURLFilter.returnExcludeIngredients(), includeIngredients: resultURLFilter.returnIncludeIngredients(), type: resultURLFilter.returnDishTypes(), maxReadyTime: resultURLFilter.returnMaxReadyTime(), maxCalories: resultURLFilter.returnMaxCalories(),sortedBy: currentSortMethod){ [weak self] (result) in
-                  switch result {
-                  case .failure(let error):
-                    self?.searchResultView.customActivityIndictator.stopAnimating()
-                      print(error)
-                  case .success(let recipes):
-                      self?.recipeArray = recipes
-                      self?.searchResultView.customActivityIndictator.stopAnimating()
-                  }
-              }
-        
+        searchResultViewModel.changeSortMethod(newSortMethod: sortByTag(tag: sender.tag))
+        searchResultViewModel.fetchRecipes()
     }
     
-    @objc private func sortByPrice() {
-        searchResultView.customActivityIndictator.startAnimating()
-        currentSortMethod = "&sort=price"
-               SpoonAPIClient.client.getRecipes(query: currentQuery, cuisine: resultURLFilter.returnCuisines(), diet: resultURLFilter.returnDiets(), excludeIngredients: resultURLFilter.returnExcludeIngredients(), intolerances: resultURLFilter.returnExcludeIngredients(), includeIngredients: resultURLFilter.returnIncludeIngredients(), type: resultURLFilter.returnDishTypes(), maxReadyTime: resultURLFilter.returnMaxReadyTime(), maxCalories: resultURLFilter.returnMaxCalories(),sortedBy: currentSortMethod){ [weak self] (result) in
-                         switch result {
-                         case .failure(let error):
-                             print(error)
-                             self?.searchResultView.customActivityIndictator.stopAnimating()
-                         case .success(let recipes):
-                             self?.recipeArray = recipes
-                             self?.searchResultView.customActivityIndictator.stopAnimating()
-                         }
-                     }
+    private func sortByTag(tag:Int) -> sortByMethod {
+        switch tag {
+        case 0:
+           return .time
+        case 1:
+          return .price
+        default:
+            return .popularity
+        }
     }
     
     private func setUpNavigationBar()
@@ -92,56 +82,33 @@ class SearchResultViewController: UIViewController {
 }
 extension SearchResultViewController:UICollectionViewDataSource,UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return recipeArray.count
+        return searchResultViewModel.currentCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RegisterCollectionViewCells.result.rawValue, for: indexPath) as? SearchResultCollectionViewCell else
         {return UICollectionViewCell()}
         
-      
-        
-        let currentRecipe = recipeArray[indexPath.item]
-        
-        let summary =  currentRecipe.summary?.replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "/a>", with: "").replacingOccurrences(of: "<b>", with: "") ?? ""
-        
-        cell.descriptionLabel.text = summary
-        
-        cell.starRatingImageView.image = RatingsModel.shared.returnCorrectStarImage(score: currentRecipe.spoonacularScore ?? 0)
-        
-       
-            cell.ratingsLabel.text = "\(currentRecipe.spoonacularScore ?? 0)"
-        
-        
-        cell.recipeTitleLabel.text = currentRecipe.title
-        
-        if let servings = currentRecipe.servings {
-             cell.servingsLabel.text = "Servings: \(servings)"
+        if isLoadingCell(for: indexPath) {
+            cell.configureCell(with: .none, itemNumber: .none)
         } else {
-            cell.servingsLabel.text = "Servings: Unavailable"
-        }
-        cell.viewRecipeButton.tag = indexPath.item
-        cell.delegate = self
-        cell.imageActivityIndc.startAnimating()
-        
-        if let image = currentRecipe.image {
-        
-        ImageHelper.shared.getImage(urlStr: image  ) { (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .failure(let error):
-                    print(error)
-                    cell.imageActivityIndc.stopAnimating()
-                case .success(let image):
-                    cell.foodImageView.image = image
-                    cell.imageActivityIndc.stopAnimating()
-                }
-            }
-        }
+            cell.delegate = self
+            cell.configureCell(with: searchResultViewModel.recipe(at: indexPath.item), itemNumber: indexPath.item)
         }
         return cell
-        
     }
+}
+
+extension SearchResultViewController:UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        if indexPaths.contains(where: { (indexPath) -> Bool in
+            isLoadingCell(for: indexPath)
+        }) {
+            searchResultView.customActivityIndictator.startAnimating()
+            searchResultViewModel.fetchRecipes()
+        }
+    }
+    
     
 }
 
@@ -160,20 +127,12 @@ extension SearchResultViewController:UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text else {return}
         searchResultView.customActivityIndictator.startAnimating()
-        currentQuery = text
-        SpoonAPIClient.client.getRecipes(query: text, cuisine: resultURLFilter.returnCuisines(), diet: resultURLFilter.returnDiets(), excludeIngredients: resultURLFilter.returnExcludeIngredients(), intolerances: resultURLFilter.returnExcludeIngredients(), includeIngredients: resultURLFilter.returnIncludeIngredients(), type: resultURLFilter.returnDishTypes(), maxReadyTime: resultURLFilter.returnMaxReadyTime(), maxCalories: resultURLFilter.returnMaxCalories(),sortedBy: currentSortMethod){ [weak self] (result) in
-            switch result {
-            case .failure(let error):
-                print(error)
-                self?.searchResultView.customActivityIndictator.stopAnimating()
-            case .success(let recipes):
-                self?.recipeArray = recipes
-                self?.searchResultView.customActivityIndictator.stopAnimating()
-
+        searchResultViewModel.changeQuery(newQuery:text)
+        searchResultView.queryLabel.text = "Search: \(text)"
+        searchResultViewModel.fetchRecipes()
             }
         }
-    }
-}
+    
 extension SearchResultViewController:SearchResultCellDelegate {
     func navigateToDetailVC(tag: Int) {
           let detailVC = DetailRecipeViewController()
@@ -181,11 +140,45 @@ extension SearchResultViewController:SearchResultCellDelegate {
         searchResultView.customActivityIndictator.startAnimating()
         guard let selectedCell = searchResultView.resultCollectionView.cellForItem(at: IndexPath(item: tag, section: 0)) as? SearchResultCollectionViewCell else {return}
               detailVC.recipeImage = selectedCell.foodImageView.image ?? UIImage(named:"Italian")!
-              detailVC.recipe = recipeArray[tag]
+        detailVC.recipe = searchResultViewModel.recipe(at: tag)
         searchResultView.customActivityIndictator.stopAnimating()
               navigationController?.pushViewController(detailVC, animated: true)
     }
     
   
+    
+}
+
+extension SearchResultViewController {
+    func isLoadingCell(for indexPath: IndexPath) -> Bool {
+        return indexPath.row >= searchResultViewModel.currentCount - 1
+      }
+
+}
+
+extension SearchResultViewController:RecipeViewModelDelegate {
+    func onFetchCompleted(with newIndexPathsToReload: [IndexPath]?) {
+    
+
+        guard let indexPaths = newIndexPathsToReload else {
+           searchResultView.customActivityIndictator.stopAnimating()
+            searchResultView.resultCollectionView.reloadData()
+            return}
+        
+        
+        searchResultView.customActivityIndictator.stopAnimating()
+        searchResultView.resultCollectionView.insertItems(at: indexPaths)
+        
+       
+        
+        
+        
+    }
+    
+    func onFetchFailed(with reason: String) {
+    searchResultView.customActivityIndictator.stopAnimating()
+        self.showAlert(title: "Warning", message: reason)
+    }
+    
     
 }

@@ -36,8 +36,7 @@ class ExcludeIngredientViewController: UIViewController {
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
             guard let ingredientName = textField.text else {return false}
     excludeIngredientView.createLabel(ingredientName:ingredientName , imageName: ingredientName)
-            
-    excludeIngredientView.delegateTwo?.exlcudeIngredient(isAdding: true, ingredient: ingredientName)
+            excludeIngredientView.delegate?.sendFilter(addOrRemove: .add, filterString: ingredientName, filterNumber: nil, filter: .excludeIngredients)
             return true
         }
     }

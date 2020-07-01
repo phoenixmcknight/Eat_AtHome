@@ -38,7 +38,7 @@ class SearchRecipeSettingsCollectionViewCell: UICollectionViewCell {
     {
         addSubviews()
         foodLabelConstraints()
-        self.layer.borderWidth = 5
+        self.layer.borderWidth = 3
         self.layer.borderColor = UIColor.black.cgColor
     }
     

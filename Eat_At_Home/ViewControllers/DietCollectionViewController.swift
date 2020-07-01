@@ -15,7 +15,7 @@ class DietCollectionViewController: UIViewController {
     let dietView = DietView()
      var onDoneBlock : ((Bool) -> Void)?
     
-    weak var delegate:DietCollectionViewDelegate?
+    weak var delegate:FilterDelegate?
 
     
     override func viewDidLoad() {
@@ -86,21 +86,7 @@ extension DietCollectionViewController:UICollectionViewDelegate,UICollectionView
             cell.dietFoodLabel.text = currentItem.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: "+", with: " ")
             cell.dietImageView.image = UIImage(named: currentItem.replacingOccurrences(of: ",", with: ""))
             cell.intoleranceActivityIndc.stopAnimating()
-//           ImageHelper.shared.getImage(urlStr: SpoonAPIClient.client.getIngredientImageURL(ingredientName: currentItem)) { (result) in
-//               DispatchQueue.main.async {
-//                   switch result {
-//                   case .failure(let error):
-//                       cell.dietActivityIndicator.stopAnimating()
-//                       print(error)
-//                       cell.dietImageView.image = UIImage(systemName:StyleGuide.ImageStrings.placeHolder)
-//                   case .success(let image):
-//                       cell.dietActivityIndicator.stopAnimating()
-//                       cell.dietImageView.image = image
-//                   }
-//               }
-//           }
-       
-       
+
            return cell
        }
        
@@ -112,10 +98,10 @@ extension DietCollectionViewController:UICollectionViewDelegate,UICollectionView
            switch selectedDietOption.filterIsSelected {
            case false:
                selectedDietOption.filterIsSelected = true
-               delegate?.sendDietSelection(diet: selectedDietOption.currentOption, isAdding: true)
+               delegate?.sendFilter(addOrRemove: .add, filterString: selectedDietOption.currentOption, filterNumber: nil, filter: .diet)
            case true:
                selectedDietOption.filterIsSelected = false
-                delegate?.sendDietSelection(diet: selectedDietOption.currentOption,isAdding:false)
+                delegate?.sendFilter(addOrRemove: .remove, filterString: selectedDietOption.currentOption, filterNumber: nil, filter: .diet)
            }
            
 }

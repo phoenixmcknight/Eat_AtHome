@@ -40,7 +40,7 @@ extension IncludeIngredientViewController:UITextFieldDelegate {
         
 ingredientView.createLabel(ingredientName:ingredientName , imageName: ingredientName)
         
-ingredientView.delegateOne?.sendIngredient(isAdding: true, ingredient: ingredientName)
+ingredientView.delegate?.sendFilter(addOrRemove: .add, filterString: ingredientName, filterNumber: nil, filter: .includeIngredients)
         return true
     }
 }

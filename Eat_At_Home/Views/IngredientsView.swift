@@ -9,6 +9,8 @@
 import UIKit
 
 class IngredientsView: UIView {
+    
+    //MARK: UIviews
 
     lazy var ingredientsTextField:UITextField = {
         let textField = UITextField()
@@ -30,10 +32,9 @@ class IngredientsView: UIView {
     
     lazy var outletArray:[UIView] = [self.ingredientsTextField]
     
-    weak var delegateOne:IncludeIngredientDelegate?
-    weak var delegateTwo:ExcludeIngredientDelegate?
+    weak var delegate:FilterDelegate?
     
-    private var currentState:IngredientViewState?
+    private var currentState:IngredientViewState? // since I'm reusing this view current state tracks which view controller i'm using it for
     
     override init(frame:CGRect) {
         super.init(frame: UIScreen.main.bounds)
@@ -56,6 +57,8 @@ class IngredientsView: UIView {
         self.addSubview(scrollyView)
         scrollyView.addSubview(ingredientsTextField)
     }
+    
+    // configures and returns a stackview
     private func configureStackView(newLabel:UIView,newImageView:UIImageView) -> UIStackView {
        let newStackView = UIStackView(arrangedSubviews: [newImageView,newLabel])
         
@@ -65,6 +68,7 @@ class IngredientsView: UIView {
         return newStackView
     }
     
+    //returns a uiView with a pan gesture and tap gesture attached to it
     private func configureNewView() -> UIView {
        
         let newView = UIView()
@@ -101,6 +105,9 @@ class IngredientsView: UIView {
         return newView
     }
     
+    //constraints for the view created by the above function
+    //top anchor of the newView is below the bottom anchor of the last object in the outlet array
+    
     private func newViewConstraints(newView:UIView,lastOutlet:UIView) {
         NSLayoutConstraint.activate([
             newView.topAnchor.constraint(equalTo: lastOutlet.bottomAnchor,constant: self.frame.height * 0.05),
@@ -111,6 +118,7 @@ class IngredientsView: UIView {
                ])
     }
     
+    // constraints for the UIimage attached to the UIView
     private func newImageViewConstraints(newImageView:UIImageView) {
      
         NSLayoutConstraint.activate([
@@ -119,6 +127,7 @@ class IngredientsView: UIView {
               ])
     }
     
+    //constraints for the label attached to the UIView
     private func configureNewLabel(ingredientName:String) -> UILabel
     {
         let newLabel = UILabel()
@@ -127,6 +136,8 @@ class IngredientsView: UIView {
         return newLabel
     }
     
+    
+    //gets image from online and sets it as the image for an imageView
     private func addImage(ingredientName:String,newImageView:UIImageView) {
         let activity = UIActivityIndicatorView()
                         activity.hidesWhenStopped = true
@@ -135,7 +146,10 @@ class IngredientsView: UIView {
                         activity.startAnimating()
         
         newImageView.addSubview(activity)
-                          
+                    
+        if let cachedImage = ImageHelper.shared.image(forKey: ingredientName as NSString) {
+            newImageView.image = cachedImage
+        } else {
               ImageHelper.shared.getImage(urlStr: SpoonAPIClient.client.getIngredientImageURL(ingredientName: ingredientName.lowercased())) { (result) in
                   DispatchQueue.main.async {
                       
@@ -149,12 +163,14 @@ class IngredientsView: UIView {
                       newImageView.image = image
                       activity.stopAnimating()
                   }
+                }
               }
               }
         
     }
     
-    private func confingureNewImageView(ingredientName:String) -> UIImageView
+    
+    private func confingureNewImageView() -> UIImageView
     {
       
       
@@ -170,21 +186,22 @@ class IngredientsView: UIView {
      public func createLabel(ingredientName:String,imageName:String)
     {
          guard let lastOutlet = outletArray.last else {return}
-        guard outletArray.count <= 8 else {return}
+        guard outletArray.count <= 8 else {return} //limits the amount of displayed objects
      
-        let newLabel = configureNewLabel(ingredientName: ingredientName)
-        let newImageView = confingureNewImageView(ingredientName: ingredientName)
-       let newView = configureNewView()
-       let imageLabelStackView = configureStackView(newLabel: newLabel, newImageView: newImageView)
+        let newLabel = configureNewLabel(ingredientName: ingredientName) // creates label
+        let newImageView = confingureNewImageView() //creates imageview
+       
+       let imageLabelStackView = configureStackView(newLabel: newLabel, newImageView: newImageView) // puts label, imageview and uiView in a stackview
         imageLabelStackView.translatesAutoresizingMaskIntoConstraints = false
-       newView.addSubview(imageLabelStackView)
+        let newView = configureNewView() //creates UIView to hold stackView
+       newView.addSubview(imageLabelStackView) //adds stackview to UIView's subview
        scrollyView.addSubview(newView)
         newImageViewConstraints(newImageView: newImageView)
         newViewConstraints(newView: newView, lastOutlet: lastOutlet)
         addImage(ingredientName: ingredientName, newImageView: newImageView)
         newLabel.heightAnchor.constraint(equalTo: ingredientsTextField.heightAnchor).isActive = true
         
-       outletArray.append(newView)
+       outletArray.append(newView) // adds newly configured view to outletArray
      
         }
     
@@ -286,39 +303,46 @@ class IngredientsView: UIView {
               }
     
     private func removeIngredient(sender:UIGestureRecognizer) {
-        guard outletArray.count > 1 else {return}
-               guard let currentOutlet = outletArray.firstIndex(where: {$0 == sender.view} ) else {return}
+        guard outletArray.count > 1 else {return} // text Field always needs to be in the outlet array so i'm exiting the function if the outlet count hits 1
+               guard let currentOutlet = outletArray.firstIndex(where: {$0 == sender.view} ) else {return} // grabs the index associated with the panGesture / tapGesture of the UIView I click on
         
-        guard let selectedLabel = outletArray[currentOutlet].subviews[0].subviews[1] as? UILabel else {return}
+        guard let selectedLabel = outletArray[currentOutlet].subviews[0].subviews[1] as? UILabel else {return} // outletArray[currentOutlet] gives me the UIView at the index of current outlet
+        //.subviews[0] grabs the stackView inside the UIView
+        //.subviews[1] grabs the uilabel inside the stackView
+        
+        
         guard let ingredientText = selectedLabel.text else {return}
         
         
                if outletArray[currentOutlet] == outletArray.last {
-               outletArray[currentOutlet].removeFromSuperview()
+               outletArray[currentOutlet].removeFromSuperview() //if the outlet i selected is last remove it from superview
                 
                 
                 switch currentState {
                 case .include:
-                     delegateOne?.sendIngredient(isAdding: false, ingredient: ingredientText)
+                    delegate?.sendFilter(addOrRemove: .remove, filterString: ingredientText, filterNumber: nil, filter: .includeIngredients)
                 case .exclude:
-                    delegateTwo?.exlcudeIngredient(isAdding: false, ingredient: ingredientText)
+                    delegate?.sendFilter(addOrRemove: .remove, filterString: ingredientText, filterNumber: nil, filter: .excludeIngredients)
                 default:
                     print("")
                 }
                
-               outletArray.remove(at: currentOutlet)
+               outletArray.remove(at: currentOutlet) //removes the selected outlet from the outlet array
                } else {
+                //if the selected outlet *isn't* last update the constraints for the other outlets
                    let index = currentOutlet as! Int
                  outletArray[currentOutlet].removeFromSuperview()
                 switch currentState {
                               case .include:
-                                   delegateOne?.sendIngredient(isAdding: false, ingredient: ingredientText)
+                                  delegate?.sendFilter(addOrRemove: .remove, filterString: ingredientText, filterNumber: nil, filter: .includeIngredients)
                               case .exclude:
-                                  delegateTwo?.exlcudeIngredient(isAdding: false, ingredient: ingredientText)
+                                 delegate?.sendFilter(addOrRemove: .remove, filterString: ingredientText, filterNumber: nil, filter: .excludeIngredients)
                               default:
                                   print("")
                               }
                  outletArray.remove(at: currentOutlet)
+                //delete the selected outlet and connect the topAnchor of the outlet *below* the selected outlet with the bottom anchor of the outlet *above* the selected outlet
+                
                outletArray[index].topAnchor.constraint(equalTo: outletArray[index - 1].bottomAnchor).isActive = true
                    outletArray[index].centerXAnchor.constraint(equalTo: outletArray[index - 1].centerXAnchor).isActive = true
     }
