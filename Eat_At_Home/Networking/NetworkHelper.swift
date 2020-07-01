@@ -28,6 +28,7 @@ class NetworkHelper {
         request.httpBody = body
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 //        request.addValue("Bearer 8SbomlGg0EcXYB5wlzxZcZKgo-XbPnUggWBtZKX9EHzpP2ChsdasnNu0e4i2J3DaZEAu7f1NjWCNUCp4HkchQyQlWyHjaqJynJ2PTW_YdgdWvSgJ8AaVAxSYVxUvXnYx", forHTTPHeaderField: "Authorization")
+        print(request)
         urlSession.dataTask(with: request) { (data, response, error) in
             DispatchQueue.main.async {
                 guard let data = data else {

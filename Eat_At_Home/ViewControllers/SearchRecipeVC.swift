@@ -4,13 +4,7 @@ class SearchRecipeVC: UIViewController {
     
     let searchRecipeView = SearchRecipeView()
     
-    var urlFilters = URLFilters() {
-        didSet {
-          //  print(urlFilters.returnDiets())
-            print(urlFilters.returnCuisines())
-            print(urlFilters.returnDishTypes())
-        }
-    }
+    var urlFilters = URLFilters() 
     
     
     
@@ -18,7 +12,6 @@ class SearchRecipeVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(searchRecipeView)
-       
         addDelegates()
         setUpNavigationBar()
         addTargetToViewButtons()
@@ -68,25 +61,17 @@ class SearchRecipeVC: UIViewController {
     @objc private func search() {
        let searchResultVC = SearchResultViewController()
     
-        searchRecipeView.customActivityIndictator.startAnimating()
-        SpoonAPIClient.client.getRecipes(query: searchRecipeView.mainSearchRecipeBar.text ?? "", cuisine: urlFilters.returnCuisines(), diet: urlFilters.returnDiets(), excludeIngredients: urlFilters.returnExcludeIngredients(), intolerances: urlFilters.returnExcludeIngredients(), includeIngredients: urlFilters.returnIncludeIngredients(), type: urlFilters.returnDishTypes(), maxReadyTime: urlFilters.returnMaxReadyTime(), maxCalories: urlFilters.returnMaxCalories(),sortedBy: "&sort=newest") { [weak self] (result) in
-            switch result {
-            case .failure( _):
-                self?.searchRecipeView.customActivityIndictator.stopAnimating()
-                self?.showAlert(title: "Error", message: "Could Not Load Events")
-            case .success(let recipes):
-                self?.searchRecipeView.customActivityIndictator.stopAnimating()
-
-                searchResultVC.recipeArray = recipes
-                searchResultVC.resultURLFilter = self?.urlFilters
-                searchResultVC.currentQuery = self?.searchRecipeView.mainSearchRecipeBar.text ?? ""
-                self?.navigationController?.pushViewController(searchResultVC, animated: true)
+        
+                searchResultVC.resultURLFilter = self.urlFilters
+            searchResultVC.searchQuery = searchRecipeView.mainSearchRecipeBar.text ?? ""
+    
+                self.navigationController?.pushViewController(searchResultVC, animated: true)
             
             }
-        }
         
-    }
+        
     private func configureVCForPresentation(subView:UIView,viewController:UIViewController) {
+        
         subView.frame = CGRect(x: 0, y: 0, width: view.frame.width * 0.80, height: view.frame.height / 2)
         subView.center.x = view.center.x
         subView.center.y = searchRecipeView.cuisineLabel.center.y - view.frame.height * 0.025
@@ -95,8 +80,7 @@ class SearchRecipeVC: UIViewController {
         subView.layer.masksToBounds = true
         
         viewController.modalPresentationStyle = .formSheet
-    }
-    
+    }    
 }
 
 extension SearchRecipeVC:UICollectionViewDataSource,UICollectionViewDelegate
@@ -106,32 +90,38 @@ extension SearchRecipeVC:UICollectionViewDataSource,UICollectionViewDelegate
         
         guard let cellOne = searchRecipeView.dishTypeCollectionView.dequeueReusableCell(withReuseIdentifier: RegisterCollectionViewCells.dish.rawValue, for: indexPath) as? SearchRecipeCourseAndCuisineCollectionViewCell else {return UICollectionViewCell()}
         
+        cellOne.hasBeenSelected = false
+        
         if collectionView == searchRecipeView.dishTypeCollectionView {
-            let currentItem = urlFilters.listOfDishTypes[indexPath.item].replacingOccurrences(of: ",", with: "")
+            let currentItem = urlFilters.listOfDishTypes[indexPath.item]
+            
+         let curremtOption =  urlFilters.listOfDishTypes[indexPath.item]
+            cellOne.setCurrentOption(selected: curremtOption)
             
             cellOne.foodLabel.text  = currentItem.replacingOccurrences(of:"+",with:" ").capitalized
             
             cellOne.foodImageView.image = UIImage(named: currentItem)
-            print("\(indexPath.item)",cellOne.returnCurrentOption())
-            if urlFilters.returnDishTypes().contains(cellOne.returnCurrentOption()) {
+            if (urlFilters.returnFilter(filter: .dishType)!.contains(cellOne.returnCurrentOption())){
                 cellOne.hasBeenSelected = true
-            } else {
-                cellOne.hasBeenSelected = false
             }
         } else {
         if collectionView == searchRecipeView.cuisineCollectionView {
             
             guard let cellTwo = searchRecipeView.cuisineCollectionView.dequeueReusableCell(withReuseIdentifier: RegisterCollectionViewCells.cuisine.rawValue, for: indexPath) as? SearchRecipeCourseAndCuisineCollectionViewCell else {return UICollectionViewCell()}
             
-            let currentItem = urlFilters.listOfcuisines[indexPath.item].replacingOccurrences(of: ",", with: "")
+            cellTwo.hasBeenSelected = false
+            
+            let currentOption = urlFilters.listOfcuisines[indexPath.item]
+            cellTwo.setCurrentOption(selected: currentOption)
+            
+            let currentItem = urlFilters.listOfcuisines[indexPath.item]
+            
             cellTwo.foodLabel.text = currentItem.replacingOccurrences(of:"+",with:" ").capitalized
             
             cellTwo.foodImageView.image = UIImage(named: currentItem)
             
-            if urlFilters.returnDishTypes().contains(cellTwo.returnCurrentOption()) {
+            if urlFilters.returnFilter(filter: .dishType)!.contains(cellTwo.returnCurrentOption()){
                 cellTwo.hasBeenSelected = true
-            } else {
-                cellTwo.hasBeenSelected = false
             }
             
             return cellTwo
@@ -141,14 +131,9 @@ extension SearchRecipeVC:UICollectionViewDataSource,UICollectionViewDelegate
             //
             guard let cellThree = searchRecipeView.settingsCollectionView.dequeueReusableCell(withReuseIdentifier: RegisterCollectionViewCells.settings.rawValue, for: indexPath) as? SearchRecipeSettingsCollectionViewCell else {return UICollectionViewCell()}
             
+            
             cellThree.foodLabel.text = urlFilters.listOfFilters[indexPath.item]
             
-            if urlFilters.returnDishTypes().contains(cellThree.returnCurrentOption()) {
-                cellThree.hasBeenSelected = true
-                    
-            } else {
-                cellThree.hasBeenSelected = false
-            }
             return cellThree
         }
         }
@@ -174,6 +159,8 @@ extension SearchRecipeVC:UICollectionViewDataSource,UICollectionViewDelegate
         if collectionView == searchRecipeView.settingsCollectionView {
             guard let selectedCell = collectionView.cellForItem(at: indexPath) as? SearchRecipeSettingsCollectionViewCell else {return}
             
+            selectedCell.hasBeenSelected = true
+            
             let currentSetting:String = urlFilters.listOfFilters[indexPath.item]
             
             selectedCell.setCurrentOption(selected: currentSetting)
@@ -185,8 +172,12 @@ extension SearchRecipeVC:UICollectionViewDataSource,UICollectionViewDelegate
                 
                 configureVCForPresentation(subView: dietCV.dietView, viewController: dietCV)
                 
+                
+                
                 dietCV.onDoneBlock = { (result) in
                     self.view.alpha = 1.0
+                    selectedCell.hasBeenSelected = false
+                    
                 }
                 
                 view.alpha = 0.5
@@ -201,6 +192,7 @@ extension SearchRecipeVC:UICollectionViewDataSource,UICollectionViewDelegate
                 
                 intoleranceVC.onDoneBlock = { (result) in
                     self.view.alpha = 1.0
+                    selectedCell.hasBeenSelected = false
                 }
                 
                 view.alpha = 0.5
@@ -209,12 +201,13 @@ extension SearchRecipeVC:UICollectionViewDataSource,UICollectionViewDelegate
             case "Include Ingredients":
                 let ingredientVC = IncludeIngredientViewController()
                 
-                ingredientVC.ingredientView.delegateOne = self
+                ingredientVC.ingredientView.delegate = self
                 
                 configureVCForPresentation(subView: ingredientVC.ingredientView, viewController: ingredientVC)
                 
                 ingredientVC.onDoneBlock = { (result) in
                     self.view.alpha = 1.0
+                    selectedCell.hasBeenSelected = false
                 }
                 
                 view.alpha = 0.5
@@ -222,12 +215,13 @@ extension SearchRecipeVC:UICollectionViewDataSource,UICollectionViewDelegate
             case "Exclude Ingredients":
                 let ingredientVC = ExcludeIngredientViewController()
                 
-                ingredientVC.excludeIngredientView.delegateTwo = self
+                ingredientVC.excludeIngredientView.delegate = self
                 
                 configureVCForPresentation(subView: ingredientVC.excludeIngredientView, viewController: ingredientVC)
                 
                 ingredientVC.onDoneBlock = { (result) in
                     self.view.alpha = 1.0
+                    selectedCell.hasBeenSelected = false
                 }
                 
                 view.alpha = 0.5
@@ -241,6 +235,7 @@ extension SearchRecipeVC:UICollectionViewDataSource,UICollectionViewDelegate
                 configureVCForPresentation(subView: readyTimeVC.readyTimeView, viewController: readyTimeVC)
                 readyTimeVC.onDoneBlock = { (result) in
                     self.view.alpha = 1.0
+                    selectedCell.hasBeenSelected = false
                 }
                 
                 view.alpha = 0.5
@@ -252,6 +247,7 @@ extension SearchRecipeVC:UICollectionViewDataSource,UICollectionViewDelegate
                 configureVCForPresentation(subView: caloriesVC.caloriesView, viewController: caloriesVC)
                 caloriesVC.onDoneBlock = { (result) in
                     self.view.alpha = 1.0
+                    selectedCell.hasBeenSelected = false
                 }
                 view.alpha = 0.5
                 present(caloriesVC,animated: true)
@@ -259,7 +255,7 @@ extension SearchRecipeVC:UICollectionViewDataSource,UICollectionViewDelegate
                 print("")
                 
             }
-            
+           
         } else if collectionView == searchRecipeView.cuisineCollectionView {
             guard let selectedCell = collectionView.cellForItem(at: indexPath) as? SearchRecipeCourseAndCuisineCollectionViewCell else {return}
             
@@ -269,11 +265,11 @@ extension SearchRecipeVC:UICollectionViewDataSource,UICollectionViewDelegate
             
             if selectedCell.hasBeenSelected == true {
                 selectedCell.setCurrentOption(selected: "")
-                urlFilters.removeCuisine(cuisine: currentCuisine)
+                urlFilters.removeFilter(newStringFilter: currentCuisine, filter: .cuisine)
                 selectedCell.hasBeenSelected = false
             } else {
                 selectedCell.setCurrentOption(selected: currentCuisine)
-                urlFilters.addCuisine(newCuisine: currentCuisine)
+                urlFilters.addFilter(newStringFilter: currentCuisine, newNumberFilter: nil, filter: .cuisine)
                 selectedCell.hasBeenSelected = true
             }
           
@@ -286,14 +282,11 @@ extension SearchRecipeVC:UICollectionViewDataSource,UICollectionViewDelegate
             
             
             if selectedCell.hasBeenSelected == true {
-                urlFilters.removeDishType(dishType: currentDishType)
-                selectedCell.setCurrentOption(selected: "empty")
+                urlFilters.removeFilter(newStringFilter: currentDishType, filter: .dishType)
                 selectedCell.hasBeenSelected = false
             } else {
-                
-                urlFilters.addDishType(newType: currentDishType)
-                selectedCell.setCurrentOption(selected: currentDishType)
-                selectedCell.hasBeenSelected = true
+                urlFilters.addFilter(newStringFilter: currentDishType, newNumberFilter: nil, filter: .dishType)
+                    selectedCell.hasBeenSelected = true
             }
             
         }
@@ -320,60 +313,15 @@ extension SearchRecipeVC:UICollectionViewDelegateFlowLayout
 
 extension SearchRecipeVC:UISearchBarDelegate {}
 
-extension SearchRecipeVC:DietCollectionViewDelegate {
-    func sendDietSelection(diet: String, isAdding: Bool) {
-        switch isAdding {
-        case true:
-            urlFilters.addDiet(newDiet: diet)
-        case false:
-            urlFilters.removeDiet(diet: diet)
-        }
-    }
-}
-extension SearchRecipeVC:IntoleranceViewControllerDelegate {
-    func sendIntoleranceSelection(intolerance: String, isAdding: Bool) {
-        switch isAdding {
-        case true:
-            urlFilters.addIntolerance(newIntolerance: intolerance)
-        case false:
-            urlFilters.removeIntolerance(intolerance: intolerance)
-        }
-    }
-}
-extension SearchRecipeVC:IncludeIngredientDelegate {
-    func sendIngredient(isAdding: Bool, ingredient: String) {
-        switch isAdding {
-        case true:
-            urlFilters.includeIngredient(ingredient: ingredient)
-        case false:
-            urlFilters.removeIngredient(ingredient: ingredient)
-        }
+extension SearchRecipeVC:FilterDelegate {
+    func sendFilter(addOrRemove: AddOrRemoveFilter, filterString: String?, filterNumber: Int?, filter: Filters) {
         
+        switch addOrRemove {
+        case .add:
+            urlFilters.addFilter(newStringFilter: filterString ?? "", newNumberFilter: filterNumber, filter: filter)
+        case.remove:
+            urlFilters.removeFilter(newStringFilter: filterString ?? "", filter: filter)
+        }
     }
 }
 
-extension SearchRecipeVC:ExcludeIngredientDelegate {
-    func exlcudeIngredient(isAdding: Bool, ingredient: String) {
-        switch isAdding {
-        case true:
-            urlFilters.excludeIngredient(ingredient: ingredient)
-        case false:
-            urlFilters.removeExcludedIngredient(ingredient: ingredient)
-        }
-        
-    }
-    
-}
-
-extension SearchRecipeVC:ReadyTimeDelegate {
-    func sendTime(time: Int) {
-        urlFilters.changeMaxReadyTime(newMaxReadyTime: time)
-    }
-}
-extension SearchRecipeVC:CaloriesDelegate {
-    func sendCalories(calories: Int) {
-        urlFilters.changeMaxCalories(newMaxCalories: calories)
-    }
-    
-    
-}

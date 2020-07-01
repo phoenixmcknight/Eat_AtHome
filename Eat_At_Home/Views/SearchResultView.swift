@@ -38,7 +38,7 @@ class SearchResultView: UIView {
     lazy var queryLabel:UILabel = {
          let label = UILabel()
             //label.textAlignment = .center
-        label.text = "Search: Pizza"
+        label.text = ""
                  label.adjustsFontSizeToFitWidth = true
                  label.numberOfLines = 0
                  label.font = UIFont(name: StyleGuide.FontStyle.fontName, size: StyleGuide.FontStyle.fontSize)
@@ -50,23 +50,40 @@ class SearchResultView: UIView {
        let button = UIButton()
         button.setTitle("Newest", for: .normal)
         button.titleLabel?.font = UIFont(name: StyleGuide.ButtonStyle.fontName, size: StyleGuide.ButtonStyle.fontSize)
+        button.tag = 0
                button.backgroundColor = StyleGuide.ButtonStyle.backgroundColor
         return button
     }()
     
     lazy var buttonTwo:UIButton = {
           let button = UIButton()
+        button.tag = 1
            button.setTitle("Price", for: .normal)
            button.titleLabel?.font = UIFont(name: StyleGuide.ButtonStyle.fontName, size: StyleGuide.ButtonStyle.fontSize)
                   button.backgroundColor = StyleGuide.ButtonStyle.backgroundColor
            return button
        }()
     
+    lazy var buttonThree:UIButton = {
+        let button = UIButton()
+        button.tag = 2
+                 button.setTitle("Popularity", for: .normal)
+                 button.titleLabel?.font = UIFont(name: StyleGuide.ButtonStyle.fontName, size: StyleGuide.ButtonStyle.fontSize)
+                        button.backgroundColor = StyleGuide.ButtonStyle.backgroundColor
+                 return button
+    }()
+    
+    lazy var additionalSortMethodButton:UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "arrowtriangle.down.fill"), for: .normal)
+        return button
+    }()
+    
     lazy var customActivityIndictator = CustomIndictator(frame: .zero)
 
     
     lazy var buttonStackView:UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [self.buttonOne,self.buttonTwo])
+        let stack = UIStackView(arrangedSubviews: [self.buttonOne,self.buttonTwo,self.buttonThree])
         stack.alignment = .center
         stack.spacing = 0
         stack.distribution = .equalSpacing
@@ -97,6 +114,7 @@ class SearchResultView: UIView {
         viewForSearchTerm.addSubview(queryLabel)
         viewForSearchTerm.addSubview(buttonStackView)
         self.addSubview(resultCollectionView)
+        self.addSubview(customActivityIndictator)
     }
     
     private func  viewSearchTermConstraints() {

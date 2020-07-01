@@ -13,7 +13,7 @@ class ReadyTimeViewController: UIViewController {
     
     let cellSpacingHeight: CGFloat = 10
     
-    weak var delegate:ReadyTimeDelegate?
+    weak var delegate:FilterDelegate?
     
     var genericTimes:[(String,Int)] = [] {
         didSet {
@@ -106,7 +106,8 @@ extension ReadyTimeViewController:UITableViewDelegate,UITableViewDataSource{
             }
         }
         
-        delegate?.sendTime(time: genericTimes[indexPath.section].1)
+        delegate?.sendFilter(addOrRemove: .add, filterString: nil, filterNumber: genericTimes[indexPath.section].1, filter: .time)
+    
      
      
     }

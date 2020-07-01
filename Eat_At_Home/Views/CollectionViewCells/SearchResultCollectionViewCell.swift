@@ -12,7 +12,6 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
           {
            let image = UIImageView()
               image.contentMode = .scaleToFill
-             
               image.layer.shadowColor = UIColor.black.cgColor
               image.layer.shadowRadius = 5.0
               image.layer.shadowOpacity = 10
@@ -43,7 +42,7 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
     }()
     
     lazy var descriptionLabel:UILabel = {
-        let label = UILabel(text: "Greens and Beans might be just the side dish you are searching for. This recipe makes 4 servings with <b>61 calories</b>, <b>3g of protein</b>, and <b>2g of fat</b> each. For <b>$1.34 per serving</b>, this recipe <b>covers 17%</b> of your daily requirements of vitamins and minerals. It is a good option if you're following a <b>gluten free and vegan</b> diet. A couple people made this recipe, and 30 would say it hit the spot. Head to the store and pick up garlic, beans, cherry tomatoes, and a few other things to make it today. From preparation to the plate, this recipe takes roughly <b>45 minutes</b>. All things considered, we decided this recipe <b>deserves a spoonacular score of 98%</b>. This score is amazing. Try <a href=\"https://spoonacular.com/recipes/beans-and-greens-96608\">Beans and Greens</a>, <a href=\"https://spoonacular.com/recipes/beans-and-greens-418240\">Beans and Greens</a>, and <a href=\"https://spoonacular.com/recipes/bbq-beans-greens-607930\">BBQ Beans & Greens</a> for similar recipes.",fontsize:12)
+        let label = UILabel(text: "",fontsize:12)
         
         label.adjustsFontSizeToFitWidth = false
         return label
@@ -69,11 +68,14 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
            return act
        }()
     
+    
+    
     private var distanceFromEdge:CGFloat = 0
     
     override init(frame:CGRect) {
         super.init(frame: frame)
         commonInit()
+        configureCell(with: .none, itemNumber: .none)
     }
     
     required init?(coder: NSCoder) {
@@ -94,6 +96,55 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
         descriptionLabelConstraints()
         recipeButtonConstraints()
         self.backgroundColor = StyleGuide.AppColors.backgroundColor
+    }
+    
+    public func configureCell(with recipe:Recipe?,itemNumber:Int?) {
+        guard let recipe = recipe else {
+            imageActivityIndc.stopAnimating()
+           return}
+        
+        descriptionLabel.text = recipe.formattedSummary
+              
+              starRatingImageView.image = RatingsModel.shared.returnCorrectStarImage(score: recipe.spoonacularScore ?? 0)
+              
+             
+            ratingsLabel.text = "\(recipe.spoonacularScore ?? 0)"
+              
+              
+              recipeTitleLabel.text = recipe.title
+              
+              if let servings = recipe.servings {
+                   servingsLabel.text = "Servings: \(servings)"
+              } else {
+                  servingsLabel.text = "Servings: Unavailable"
+              }
+              viewRecipeButton.tag = itemNumber!
+        
+             imageActivityIndc.startAnimating()
+              
+              if let imageURL = recipe.image {
+              
+                if let cachedImage = ImageHelper.shared.image(forKey: imageURL as NSString) {
+                    foodImageView.image = cachedImage
+                } else {
+                
+              ImageHelper.shared.getImage(urlStr: imageURL  ) { [weak self] (result) in
+                  DispatchQueue.main.async {
+                      switch result {
+                      case .failure(_):
+                        self?.foodImageView.image = UIImage(systemName: "photo")!
+                        self?.imageActivityIndc.stopAnimating()
+                      case .success(let image):
+                        
+                        self?.foodImageView.image = image
+                        self?.imageActivityIndc.stopAnimating()
+                      }
+                  }
+              }
+              }
+              } else {
+                foodImageView.image = UIImage(systemName: "photo")
+        }
     }
     
     private func addSubviews() {
@@ -200,5 +251,4 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
             imageActivityIndc.centerYAnchor.constraint(equalTo: foodImageView.centerYAnchor)
            ])
        }
-    
 }

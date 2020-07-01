@@ -14,7 +14,7 @@ class IntoleranceViewController: UIViewController {
         let intoleranceView = IntolerancesView()
          var onDoneBlock : ((Bool) -> Void)?
         
-   weak var delegate:IntoleranceViewControllerDelegate?
+   weak var delegate:FilterDelegate?
 
         
         override func viewDidLoad() {
@@ -95,11 +95,10 @@ class IntoleranceViewController: UIViewController {
                 switch selectedIntolerance.filterIsSelected {
                 case false:
                     selectedIntolerance.filterIsSelected = true
-                    delegate?.sendIntoleranceSelection(intolerance: selectedIntolerance.currentOption, isAdding: true)
+                    delegate?.sendFilter(addOrRemove: .add, filterString: selectedIntolerance.currentOption, filterNumber: nil, filter: .intolerance)
                 case true:
                     selectedIntolerance.filterIsSelected = false
-                    delegate?.sendIntoleranceSelection(intolerance: selectedIntolerance.currentOption, isAdding: false)
-                    
+                    delegate?.sendFilter(addOrRemove: .remove, filterString: selectedIntolerance.currentOption, filterNumber: nil, filter: .intolerance)
                 }
     }
     
