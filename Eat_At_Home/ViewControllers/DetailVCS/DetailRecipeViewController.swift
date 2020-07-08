@@ -4,95 +4,89 @@ import UIKit
 class DetailRecipeViewController: UIViewController {
 
     let detailRecipeView = DetailRecipeView()
-    var recipeImage:UIImage = UIImage()
+    var recipeImage:UIImage!
     var recipe:Recipe!
-    var oldValue:Double = 0
-    lazy var customStepper = UIStepper (frame:CGRect(x: 110, y: 250, width: 0, height: 0))
-    
+    var ingredients:[Ingredients] = []
+    var savedRecipes:Dictionary<String,String>!
+    var isSaving:Bool = false
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
       view.addSubview(detailRecipeView)
-      detailRecipeView.addSubview(customStepper)
-      customStepperConstraints()
-        setUpView()
-       
+      configureDetailVC()
+    
    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        returnCountOfRecipeInCart(recipeID: recipe.id)
-         oldValue = customStepper.value
-    }
-    
-    @objc func stepperValueChanged(sender:UIStepper!)
-    {
-        if sender.value > oldValue {
-                   oldValue += 1
-            checkCountOfRecipeInCart(recipeID: recipe.id)
-            do {
-                try RecipePersistenceManager.manager.save(newRecipe: recipe)
-                self.showAlert(title: "+ 1", message: "You've Added \(recipe.title ?? "") To Your Cart")
-            } catch {
-            print(error)
-            }
-               } else {
-                   oldValue -= 1
-             self.showAlert(title: "- 1", message: "You've Removed \(recipe.title ?? "") From Your Cart")
-                    do {
-                        try RecipePersistenceManager.manager.deleteRecipe(recipeID: recipe.id)
-                              } catch {
-                              print(error)
-                              }
-               }
         
+    }
+    private func setDelegates() {
+        detailRecipeView.ingredientCollectionView.dataSource = self
+        detailRecipeView.ingredientCollectionView.delegate = self
         
     }
     
-    private func checkCountOfRecipeInCart(recipeID:Int) {
-        do {
-          let count =  try RecipePersistenceManager.manager.getSavedRecipes().filter({$0.id == recipeID}).count
-            guard count <= 5 else {showAlert(title: "Slow Down", message: "You've Reached The Cart Limit For This Recipe")
-                return
-            }
-        } catch {
-            print(error)
+    private func configureDetailVC() {
+        ingredients = recipe.returnIngredientList()
+             setDelegates()
+              detailRecipeView.configureView(with: recipeImage, recipe: recipe)
+              savedRecipes = UserDefaultsWrapper.shared.getRecipeDict() ?? Dictionary<String,String>()
+          configureNavigationBar()
+    }
+    
+    private func configureNavigationBar() {
+        let button = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(favoriteRecipe))
+        navigationItem.rightBarButtonItem = button
+    }
+    
+    @objc private func favoriteRecipe() {
+        guard !isSaving else {return}
+        isSaving = true
+       
+        guard savedRecipes["\(recipe.id)"] == nil else {
+            showAlert(title: "Error", message: "Recipe Already Saved")
+        isSaving = false
+            return
         }
-    }
-    
-    private func returnCountOfRecipeInCart(recipeID:Int) {
-        do {
-            customStepper.value = Double(try RecipePersistenceManager.manager.getSavedRecipes().filter({$0.id == recipeID}).count)
-        } catch {
-            print(error)
-        }
-    }
-
-    private func customStepperConstraints() {
-        customStepper.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            
-            customStepper.bottomAnchor.constraint(equalTo: detailRecipeView.descriptionTextView.topAnchor),
-            customStepper.leadingAnchor.constraint(equalTo: detailRecipeView.cartLabel.trailingAnchor),
-            customStepper.trailingAnchor.constraint(equalTo: detailRecipeView.trailingAnchor)
-            
-        ])
-    }
-
-    private func setUpView() {
-        detailRecipeView.foodImageView.image = recipeImage
-        detailRecipeView.descriptionTextView.text = recipe.summary?.replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "/a>", with: "").replacingOccurrences(of: "<b>", with: "").replacingOccurrences(of: "<a", with: "")
-        detailRecipeView.recipeTitleLabel.text = recipe.title
-        customStepper.wraps = false
-              customStepper.autorepeat = false
-              customStepper.maximumValue = 5
-              customStepper.minimumValue = 0
-              customStepper.value = 0
-              customStepper.addTarget(self, action: #selector(stepperValueChanged(sender:)), for: .valueChanged)
         
+        do {
+            try
+         RecipePersistenceManager.manager.save(newRecipe: recipe)
+            savedRecipes["\(recipe.id)"] = "Saved"
+            UserDefaultsWrapper.shared.store(recipeList: savedRecipes)
+            isSaving = false
+            showAlert(title: "Success", message: "Saved \(recipe.title?.capitalized ?? "")")
+        } catch {
+            showAlert(title: "Error", message: "Failed To Save Recipe. Please Try Again")
+            isSaving = false
+        }
+         
+        }
+    
+   
+}
+
+
+extension DetailRecipeViewController:UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return ingredients.count
     }
     
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RegisterCollectionViewCells.ingredients.rawValue, for: indexPath) as? IngredientsCollectionViewCell else {return UICollectionViewCell()}
+        cell.configureCell(with: ingredients[indexPath.item])
+        
+    return cell
+    }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: detailRecipeView.ingredientCollectionView.frame.height * 0.50, height: detailRecipeView.ingredientCollectionView.frame.height * 0.75)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 20
+    }
     
 }

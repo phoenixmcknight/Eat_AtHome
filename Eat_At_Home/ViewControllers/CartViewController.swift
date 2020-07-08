@@ -13,38 +13,38 @@ class CartViewController: UIViewController {
     let cartView = CartView()
     let emptyCart = EmptyCartView()
     let cellSpacingHeight: CGFloat = 10
-    var filteredRecipeArray:[Recipe] = [] 
-    var actualRecipeArray:[Recipe] = [] {
+    var savedRecipeIDS:Dictionary<String,String>!
+    var recipeArray:[Recipe] = [] {
         didSet {
-            if actualRecipeArray.count == 0 {
-                          cartView.removeFromSuperview()
-                          view.addSubview(emptyCart)
-                          navigationItem.title = "There Are Zero Items In Your Cart"
-                      } else {
-                              emptyCart.removeFromSuperview()
-                              view.addSubview(cartView)
-                          cartView.cartTable.reloadData()
-                                         setNavigationTitle()
-                          }
+            guard !recipeArray.isEmpty else {
+                cartView.removeFromSuperview()
+                                         view.addSubview(emptyCart)
+                                         navigationItem.title = "There Are Zero Items In Your Cart"
+                return
+            }
+        emptyCart.removeFromSuperview()
+                                    view.addSubview(cartView)
+                                cartView.cartTable.reloadData()
+                                               setNavigationTitle()
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegates()
-        
+       
         // Do any additional setup after loading the view.
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-         setUpRecipeArray()
+         setUpSavedRecipes()
     }
     
-    private func setUpRecipeArray() {
+    private func setUpSavedRecipes() {
         do { try
-      filteredRecipeArray = Array(Set(RecipePersistenceManager.manager.getSavedRecipes()))
-          try  actualRecipeArray = RecipePersistenceManager.manager.getSavedRecipes()
+            recipeArray = RecipePersistenceManager.manager.getSavedRecipes()
+             savedRecipeIDS = UserDefaultsWrapper.shared.getRecipeDict() ?? Dictionary<String,String>()
         } catch {
             print(error)
         }
@@ -54,7 +54,7 @@ class CartViewController: UIViewController {
    
     
     private func setNavigationTitle() {
-        navigationItem.title = "\(actualRecipeArray.count) Item(s)"
+        navigationItem.title = "\(recipeArray.count) Item(s)"
     }
     
     private func setDelegates() {
@@ -69,14 +69,13 @@ extension CartViewController:UITableViewDataSource,UITableViewDelegate {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return filteredRecipeArray.count
+        return recipeArray.count
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
            return cellSpacingHeight
        }
 
-       // Make the background color show through
        func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
            let headerView = UIView()
            headerView.backgroundColor = UIColor.clear
@@ -91,7 +90,7 @@ extension CartViewController:UITableViewDataSource,UITableViewDelegate {
         guard let cell = cartView.cartTable.dequeueReusableCell(withIdentifier: RegisterCollectionViewCells.cart.rawValue) as? CartTableViewCell else
              {return UITableViewCell()}
             
-        let currentRecipe = filteredRecipeArray[indexPath.section]
+        let currentRecipe = recipeArray[indexPath.section]
              
         cell.backgroundColor = UIColor.white
               cell.layer.borderColor = UIColor.black.cgColor
@@ -100,9 +99,7 @@ extension CartViewController:UITableViewDataSource,UITableViewDelegate {
               cell.clipsToBounds = true
         
         cell.foodLabel.text = currentRecipe.title
-        cell.countLabel.text = "\(actualRecipeArray.filter({$0.id == currentRecipe.id}).count) In Cart"
-       
-        
+                    
         if let image = currentRecipe.image {
         
         ImageHelper.shared.getImage(urlStr: image  ) { (result) in
@@ -123,14 +120,31 @@ extension CartViewController:UITableViewDataSource,UITableViewDelegate {
         return cell
     }
     
+ func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+       if editingStyle == UITableViewCell.EditingStyle.delete {
+        deleteRecipe(row: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
+       }
+   }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         guard let selectedCell = cartView.cartTable.cellForRow(at: indexPath) as? CartTableViewCell else {return}
         let detailVC = DetailRecipeViewController()
         
-                   detailVC.recipeImage = selectedCell.foodImageView.image ?? UIImage(named:"Italian")!
-        detailVC.recipe = filteredRecipeArray[indexPath.section]
+                   detailVC.recipeImage = selectedCell.foodImageView.image ?? UIImage(systemName: "photo")!
+        detailVC.recipe = recipeArray[indexPath.section]
                    navigationController?.pushViewController(detailVC, animated: true)
     }
     
+}
+extension CartViewController {
+    private func deleteRecipe(row:Int) {
+        do {
+            try RecipePersistenceManager.manager.deleteRecipe(recipeID: recipeArray[row].id)
+            savedRecipeIDS["\(recipeArray[row].id)"] = nil
+        } catch {
+            showAlert(title: "Error", message: "Failed To Delete Recipe")
+        }
+    }
 }

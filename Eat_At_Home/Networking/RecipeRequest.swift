@@ -29,7 +29,6 @@ struct RecipeRequestParameters {
        self.parameters = parameters
      }
     
-    // let urlStr = "https://api.spoonacular.com/recipes/complexSearch?apiKey=\(Secrets.spoonApiKey)&addRecipeInformation=true&instructionsRequired=true&author&number=2\(keyWord.replacingOccurrences(of: " ", with: "+"))\(cuisine)\(diet)\(excludeIngredients)\(includeIngredients)\(intolerances)\(course)\(maxReadyTime)\(maxCalories)\(sortedBy)"
 }
 
 extension RecipeRequestParameters {

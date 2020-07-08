@@ -36,7 +36,6 @@ class SpoonAPIClient {
         
         let urlRequest = URLRequest(url: baseURL).encode(with: parameters)
         
-        print(urlRequest)
         session.dataTask(with: urlRequest) { (data, response, error) in
             DispatchQueue.main.async {
                 

@@ -10,6 +10,13 @@ struct PersistenceHelper<T: Codable> {
         return try PropertyListDecoder().decode([T].self, from: data)
     }
     
+    func getObject() throws -> T? {
+        guard let data = FileManager.default.contents(atPath: url.path) else {
+            return nil
+        }
+        return try PropertyListDecoder().decode(T.self, from: data)
+    }
+    
     func save(newElement: T) throws {
         var elements = try getObjects()
         elements.insert(newElement, at: 0)

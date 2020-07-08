@@ -90,11 +90,11 @@ class SearchRecipeView: UIView {
                return label
        }()
     
-    lazy var SettingsLabel:UILabel =
+    lazy var settingsLabel:UILabel =
            {
             
                let label = UILabel()
-            label.text = "Filter"
+            label.text = "Filters"
                label.textAlignment = .center
                          label.adjustsFontSizeToFitWidth = true
                          label.numberOfLines = 0
@@ -153,7 +153,7 @@ return button
         self.addSubview(dishTypeCollectionView)
         self.addSubview(cuisineLabel)
         self.addSubview(cuisineCollectionView)
-        self.addSubview(SettingsLabel)
+        self.addSubview(settingsLabel)
         self.addSubview(settingsCollectionView)
         self.addSubview(searchButton)
         self.addSubview(customActivityIndictator)
@@ -212,13 +212,13 @@ return button
     }
     
     private func filterLabelConstraints() {
-        SettingsLabel.translatesAutoresizingMaskIntoConstraints = false
+        settingsLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-        SettingsLabel.topAnchor.constraint(equalTo: cuisineCollectionView.bottomAnchor),
-                       SettingsLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-                       SettingsLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-                       SettingsLabel.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.05)
+        settingsLabel.topAnchor.constraint(equalTo: cuisineCollectionView.bottomAnchor),
+                       settingsLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+                       settingsLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+                       settingsLabel.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.025)
         ])
     }
    
@@ -227,7 +227,7 @@ return button
         settingsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-        settingsCollectionView.topAnchor.constraint(equalTo: SettingsLabel.bottomAnchor),
+        settingsCollectionView.topAnchor.constraint(equalTo: settingsLabel.bottomAnchor),
         settingsCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
         settingsCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
         settingsCollectionView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.2)
