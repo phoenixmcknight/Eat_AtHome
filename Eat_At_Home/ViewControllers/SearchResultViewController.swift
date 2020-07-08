@@ -13,6 +13,7 @@ class SearchResultViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(searchResultView)
+        searchResultView.customActivityIndictator.startAnimating()
         setDelegatesToSelf()
         setUpNavigationBar()
         addTargetToButtons()
@@ -51,20 +52,11 @@ class SearchResultViewController: UIViewController {
     
     @objc private func sortMethod(sender:UIButton) {
         searchResultView.customActivityIndictator.startAnimating()
-        searchResultViewModel.changeSortMethod(newSortMethod: sortByTag(tag: sender.tag))
+        searchResultViewModel.changeSortMethod(tag: sender.tag)
         searchResultViewModel.fetchRecipes()
     }
     
-    private func sortByTag(tag:Int) -> sortByMethod {
-        switch tag {
-        case 0:
-           return .time
-        case 1:
-          return .price
-        default:
-            return .popularity
-        }
-    }
+    
     
     private func setUpNavigationBar()
        {
@@ -72,7 +64,6 @@ class SearchResultViewController: UIViewController {
            
            
            navigationItem.rightBarButtonItem = barButton
-          //change this
            navigationItem.title = "Recipes"
            
            

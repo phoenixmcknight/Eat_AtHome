@@ -16,6 +16,8 @@ enum RegisterCollectionViewCells:String {
     case intolerances
     case result
     case cart
+    case steps
+    case ingredients
 }
 
 enum IngredientViewState {

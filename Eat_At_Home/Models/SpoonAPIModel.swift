@@ -41,34 +41,42 @@ struct Recipe: Codable,Hashable {
     let readyInMinutes, servings: Int?
     let image: String?
     var summary: String?
-    var formattedSummary:String {
-    
-        return summary?.replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "/a>", with: "").replacingOccurrences(of: "<b>", with: "") ?? ""
-    }
+    var analyzedInstructions:[Steps]
+
   //  let analyzedInstructions: [AnalyzedInstruction]?
     let preparationMinutes, cookingMinutes: Int?
     
-    static func getRecipeData(data:Data)throws -> [Recipe]? {
-             do{
-                 let recipeData = try
-                     JSONDecoder().decode(RecipeWrapper.self, from: data)
-                return recipeData.results
-             } catch {
-                 print(error)
-                 return nil
-             }
-         }
+    
+    
+    func returnIngredientList() -> [Ingredients] {
+            var ingredients:[Ingredients] = []
+        analyzedInstructions[0].steps.forEach { (step) in
+        ingredients.append(contentsOf: step.ingredients)
+    }
+        return ingredients
+    }
+        
+        
 
 }
 
-// MARK: - AnalyzedInstruction
-//struct AnalyzedInstruction: Codable {
-//    let name: String
-//    let steps: [Step]
-//}
+ //MARK: - AnalyzedInstruction
+struct Steps: Codable,Hashable {
+    let name: String
+    let steps: [Step]
+    
+}
 
 // MARK: - Step
-//struct Step: Codable {
-//    let number: Int
-//    let step: String
-//}
+struct Step: Codable,Hashable {
+    let number: Int
+    let step: String
+    let ingredients:[Ingredients]
+}
+
+struct Ingredients:Codable,Hashable {
+    let id:Int
+    let name:String
+    let localizedName:String
+    let image:String
+}

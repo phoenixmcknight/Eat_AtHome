@@ -31,7 +31,7 @@ class IntoleranceViewController: UIViewController {
             super.viewDidDisappear(animated)
           
             onDoneBlock!(true)
-           
+          
         }
 
        

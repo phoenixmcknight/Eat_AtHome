@@ -50,6 +50,7 @@ class SearchResultView: UIView {
        let button = UIButton()
         button.setTitle("Newest", for: .normal)
         button.titleLabel?.font = UIFont(name: StyleGuide.ButtonStyle.fontName, size: StyleGuide.ButtonStyle.fontSize)
+         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.tag = 0
                button.backgroundColor = StyleGuide.ButtonStyle.backgroundColor
         return button
@@ -60,6 +61,7 @@ class SearchResultView: UIView {
         button.tag = 1
            button.setTitle("Price", for: .normal)
            button.titleLabel?.font = UIFont(name: StyleGuide.ButtonStyle.fontName, size: StyleGuide.ButtonStyle.fontSize)
+         button.titleLabel?.adjustsFontSizeToFitWidth = true
                   button.backgroundColor = StyleGuide.ButtonStyle.backgroundColor
            return button
        }()
@@ -69,6 +71,7 @@ class SearchResultView: UIView {
         button.tag = 2
                  button.setTitle("Popularity", for: .normal)
                  button.titleLabel?.font = UIFont(name: StyleGuide.ButtonStyle.fontName, size: StyleGuide.ButtonStyle.fontSize)
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
                         button.backgroundColor = StyleGuide.ButtonStyle.backgroundColor
                  return button
     }()
@@ -76,6 +79,7 @@ class SearchResultView: UIView {
     lazy var additionalSortMethodButton:UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "arrowtriangle.down.fill"), for: .normal)
+       
         return button
     }()
     
@@ -85,8 +89,8 @@ class SearchResultView: UIView {
     lazy var buttonStackView:UIStackView = {
         let stack = UIStackView(arrangedSubviews: [self.buttonOne,self.buttonTwo,self.buttonThree])
         stack.alignment = .center
-        stack.spacing = 0
-        stack.distribution = .equalSpacing
+        stack.spacing = 10
+        stack.distribution = .fillProportionally
         return stack
     }()
     

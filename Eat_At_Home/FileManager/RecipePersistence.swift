@@ -13,10 +13,11 @@ struct RecipePersistenceManager {
 
         return try persistenceHelper.getObjects()
     }
+    
 
     func deleteRecipe(recipeID:Int) throws {
         do {
-//            var letNewRecipeArray = try getSavedRecipes().filter({$0.id != recipeID})
+
              var letNewRecipeArray = try getSavedRecipes()
            
             for (i,v) in letNewRecipeArray.enumerated() {
@@ -31,14 +32,10 @@ struct RecipePersistenceManager {
             print(error)
         }
     }
-   func replaceAllFunction(newRecipe:[Recipe]) throws {
-        do {
-            try persistenceHelper.replace(elements: newRecipe)
-            
-        }
-    }
 
     private let persistenceHelper = PersistenceHelper<Recipe>(fileName: "recipe.plist")
+  
+   
 
     private init() {}
 }

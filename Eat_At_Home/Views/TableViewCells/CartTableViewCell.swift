@@ -64,14 +64,14 @@ class CartTableViewCell: UITableViewCell {
         foodImageConstraints()
         activityIndcConstraints()
         foodLabelConstraints()
-        countLabelConstraints()
+       
     }
     
     private func addSubviews() {
         self.addSubview(foodImageView)
         self.addSubview(imageActivityIndc)
         self.addSubview(foodLabel)
-        self.addSubview(countLabel)
+        
     }
     
   private func foodImageConstraints()
@@ -93,20 +93,11 @@ class CartTableViewCell: UITableViewCell {
                foodLabel.leadingAnchor.constraint(equalTo: foodImageView.trailingAnchor),
                foodLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
                foodLabel.topAnchor.constraint(equalTo: self.topAnchor),
-               foodLabel.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5)
+               foodLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
            ])
        }
     
-    private func countLabelConstraints() {
-        countLabel.translatesAutoresizingMaskIntoConstraints = false
-               
-        NSLayoutConstraint.activate([
-                     countLabel.centerXAnchor.constraint(equalTo: foodLabel.centerXAnchor),
-                     countLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-                     countLabel.heightAnchor.constraint(equalTo: foodLabel.heightAnchor),
-                     countLabel.widthAnchor.constraint(equalTo: foodLabel.widthAnchor)
-                 ])
-    }
+
        private func activityIndcConstraints() {
               imageActivityIndc.translatesAutoresizingMaskIntoConstraints = false
               NSLayoutConstraint.activate([

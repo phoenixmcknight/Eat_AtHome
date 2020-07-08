@@ -44,12 +44,14 @@ import UIKit
     return searchRecipes[index]
   }
     
-func changeSortMethod(newSortMethod:sortByMethod) {
-    sortMethod = newSortMethod
+    func changeSortMethod(tag:Int) {
+   
+    sortMethod = sortByTag(tag: tag)
     offSet = 0
     searchRecipes = []
     }
     
+   
     func changeQuery(newQuery:String) {
         searchQuery = newQuery
     }
@@ -82,12 +84,21 @@ func changeSortMethod(newSortMethod:sortByMethod) {
     }
     
   
-  private func calculateIndexPathsToReload(from newModerators: [Recipe]) -> [IndexPath] {
-    let startIndex = searchRecipes.count - newModerators.count
-    let endIndex = startIndex + newModerators.count
+  private func calculateIndexPathsToReload(from newRecipes: [Recipe]) -> [IndexPath] {
+    let startIndex = searchRecipes.count - newRecipes.count
+    let endIndex = startIndex + newRecipes.count
     return (startIndex..<endIndex).map { IndexPath(row: $0, section: 0) }
   }
-  
+    private func sortByTag(tag:Int) -> sortByMethod {
+           switch tag {
+           case 0:
+              return .time
+           case 1:
+             return .price
+           default:
+               return .popularity
+           }
+       }
     
 }
 

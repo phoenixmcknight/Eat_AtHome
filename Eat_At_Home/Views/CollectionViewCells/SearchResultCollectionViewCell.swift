@@ -103,7 +103,7 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
             imageActivityIndc.stopAnimating()
            return}
         
-        descriptionLabel.text = recipe.formattedSummary
+      //  descriptionLabel.text = recipe.formattedSummary
               
               starRatingImageView.image = RatingsModel.shared.returnCorrectStarImage(score: recipe.spoonacularScore ?? 0)
               
