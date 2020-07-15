@@ -119,4 +119,41 @@ struct URLFilters  {
             return maxCalories
         }
     }
+    
+    func returnParameter() -> Parameters {
+        var parameters = Parameters()
+            if !returnFilter(filter: .dishType)!.isEmpty  {
+                   parameters.merge(["type" : returnFilter(filter: .dishType)!], uniquingKeysWith: +)
+               }
+        
+               if !returnFilter(filter: .cuisine)!.isEmpty  {
+                            parameters.merge(["cuisine" : returnFilter(filter: .cuisine)!], uniquingKeysWith: +)
+                      }
+        
+               if !returnFilter(filter: .diet)!.isEmpty  {
+                            parameters.merge(["diet" : returnFilter(filter: .diet)!], uniquingKeysWith: +)
+                      }
+        
+               if !returnFilter(filter: .excludeIngredients)!.isEmpty  {
+                            parameters.merge(["excludeIngredients" : returnFilter(filter: .excludeIngredients)!], uniquingKeysWith: +)
+                      }
+        
+               if !returnFilter(filter: .includeIngredients)!.isEmpty  {
+                            parameters.merge(["includeIngredients" : returnFilter(filter: .includeIngredients)!], uniquingKeysWith: +)
+                      }
+        
+               if !returnFilter(filter: .intolerance)!.isEmpty  {
+                            parameters.merge(["intolerances" : returnFilter(filter: .intolerance)!], uniquingKeysWith: +)
+                      }
+        
+               if let maxTime = returnFilter(filter: .time) {
+                      parameters.merge( ["maxReadyTime":"\(maxTime)"], uniquingKeysWith: +)
+                  }
+               if let maxCal = returnFilter(filter: .calories) {
+                      parameters.merge(["maxCalories":"\(maxCal)"], uniquingKeysWith: +)
+                  }
+        return parameters
+    }
+    
+
 }

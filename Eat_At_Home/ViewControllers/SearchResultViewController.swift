@@ -1,13 +1,12 @@
 import UIKit
 
-class SearchResultViewController: UIViewController {
+class SearchResultViewController: MVVMViewController<RecipeViewModel> {
+    
 
     let searchResultView = SearchResultView()
     
     var resultURLFilter:URLFilters!
-    
-    var searchResultViewModel:RecipeViewModel!
-    
+        
     var searchQuery:String!
     
     override func viewDidLoad() {
@@ -18,11 +17,10 @@ class SearchResultViewController: UIViewController {
         setUpNavigationBar()
         addTargetToButtons()
        
-        let request = RecipeRequestParameters.from(urlFilters: resultURLFilter)
-        searchResultViewModel = RecipeViewModel(request: request, delegate: self, searchQuery: searchQuery)
+        viewModel.delegate = self
         
         
-        searchResultViewModel.fetchRecipes()
+        viewModel.fetchRecipes()
         // Do any additional setup after loading the view.
     }
     
@@ -52,8 +50,8 @@ class SearchResultViewController: UIViewController {
     
     @objc private func sortMethod(sender:UIButton) {
         searchResultView.customActivityIndictator.startAnimating()
-        searchResultViewModel.changeSortMethod(tag: sender.tag)
-        searchResultViewModel.fetchRecipes()
+        viewModel.changeSortMethod(tag: sender.tag)
+        viewModel.fetchRecipes()
     }
     
     
@@ -73,7 +71,7 @@ class SearchResultViewController: UIViewController {
 }
 extension SearchResultViewController:UICollectionViewDataSource,UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return searchResultViewModel.currentCount
+        return viewModel.currentCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -84,7 +82,7 @@ extension SearchResultViewController:UICollectionViewDataSource,UICollectionView
             cell.configureCell(with: .none, itemNumber: .none)
         } else {
             cell.delegate = self
-            cell.configureCell(with: searchResultViewModel.recipe(at: indexPath.item), itemNumber: indexPath.item)
+            cell.configureCell(with: viewModel.recipe(at: indexPath.item), itemNumber: indexPath.item)
         }
         return cell
     }
@@ -96,7 +94,7 @@ extension SearchResultViewController:UICollectionViewDataSourcePrefetching {
             isLoadingCell(for: indexPath)
         }) {
             searchResultView.customActivityIndictator.startAnimating()
-            searchResultViewModel.fetchRecipes()
+            viewModel.fetchRecipes()
         }
     }
     
@@ -118,9 +116,9 @@ extension SearchResultViewController:UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text else {return}
         searchResultView.customActivityIndictator.startAnimating()
-        searchResultViewModel.changeQuery(newQuery:text)
+        viewModel.changeQuery(newQuery:text)
         searchResultView.queryLabel.text = "Search: \(text)"
-        searchResultViewModel.fetchRecipes()
+        viewModel.fetchRecipes()
             }
         }
     
@@ -131,7 +129,7 @@ extension SearchResultViewController:SearchResultCellDelegate {
         searchResultView.customActivityIndictator.startAnimating()
         guard let selectedCell = searchResultView.resultCollectionView.cellForItem(at: IndexPath(item: tag, section: 0)) as? SearchResultCollectionViewCell else {return}
               detailVC.recipeImage = selectedCell.foodImageView.image ?? UIImage(named:"Italian")!
-        detailVC.recipe = searchResultViewModel.recipe(at: tag)
+        detailVC.recipe = viewModel.recipe(at: tag)
         searchResultView.customActivityIndictator.stopAnimating()
               navigationController?.pushViewController(detailVC, animated: true)
     }
@@ -142,7 +140,7 @@ extension SearchResultViewController:SearchResultCellDelegate {
 
 extension SearchResultViewController {
     func isLoadingCell(for indexPath: IndexPath) -> Bool {
-        return indexPath.row >= searchResultViewModel.currentCount - 1
+        return indexPath.row >= viewModel.currentCount - 1
       }
 
 }
