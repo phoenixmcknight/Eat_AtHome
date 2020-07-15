@@ -11,7 +11,7 @@ import UIKit
 
 
  class RecipeViewModel {
-  private weak var delegate: RecipeViewModelDelegate?
+   weak var delegate: RecipeViewModelDelegate?
   
   private var searchRecipes: [Recipe] = []
   private var offSet = 0
@@ -24,9 +24,8 @@ import UIKit
     
 
   
-    init(request: RecipeRequestParameters, delegate: RecipeViewModelDelegate, searchQuery:String) {
+    init(request: RecipeRequestParameters, searchQuery:String) {
     self.request = request
-    self.delegate = delegate
     self.searchQuery = searchQuery
   }
   
@@ -70,7 +69,7 @@ import UIKit
             
             case .success(let apiResponse):
                 self?.isFetchInProgress = false
-                self?.offSet += 10
+                self?.offSet += RecipeRequestParameters.defaultRequestNumber
                 self?.total = apiResponse.totalResults
                 self?.searchRecipes.append(contentsOf: apiResponse.results)
                 if self!.offSet > 0 {

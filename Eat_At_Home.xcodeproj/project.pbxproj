@@ -44,6 +44,7 @@
 		695FAD48242EDFD800D9AE2F /* SearchRecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 695FAD47242EDFD800D9AE2F /* SearchRecipeView.swift */; };
 		695FAD4A242EDFF900D9AE2F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 695FAD49242EDFF900D9AE2F /* Extensions.swift */; };
 		695FAD4C242EE00600D9AE2F /* CustomIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 695FAD4B242EE00600D9AE2F /* CustomIndicator.swift */; };
+		696F1E0924BF82FA0050A260 /* MVVMViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696F1E0824BF82FA0050A260 /* MVVMViewController.swift */; };
 		6984D891248452AF00D173B4 /* IngredientImageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6984D890248452AF00D173B4 /* IngredientImageAPI.swift */; };
 		6984D8932484609A00D173B4 /* SpoonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6984D8922484609A00D173B4 /* SpoonViewModel.swift */; };
 		69A1FCE52434765100AEB980 /* SpoonAPIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A1FCE42434765100AEB980 /* SpoonAPIModel.swift */; };
@@ -111,6 +112,7 @@
 		695FAD47242EDFD800D9AE2F /* SearchRecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchRecipeView.swift; path = Eat_At_HomeTests/SearchRecipeView.swift; sourceTree = SOURCE_ROOT; };
 		695FAD49242EDFF900D9AE2F /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		695FAD4B242EE00600D9AE2F /* CustomIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomIndicator.swift; sourceTree = "<group>"; };
+		696F1E0824BF82FA0050A260 /* MVVMViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVVMViewController.swift; sourceTree = "<group>"; };
 		6984D890248452AF00D173B4 /* IngredientImageAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientImageAPI.swift; sourceTree = "<group>"; };
 		6984D8922484609A00D173B4 /* SpoonViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpoonViewModel.swift; sourceTree = "<group>"; };
 		69A1FCE42434765100AEB980 /* SpoonAPIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpoonAPIModel.swift; sourceTree = "<group>"; };
@@ -309,6 +311,7 @@
 				6926FF532433D96900081FC6 /* CaloriesViewController.swift */,
 				69DD754824349613008E82ED /* CartViewController.swift */,
 				69014A3B24AD9F080081768A /* test.swift */,
+				696F1E0824BF82FA0050A260 /* MVVMViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -458,6 +461,7 @@
 				691C33712485A50E00A6440B /* FilterDelegate.swift in Sources */,
 				69DD754324348FB7008E82ED /* CartView.swift in Sources */,
 				6902DEDD24319D7700649E6E /* QueryView.swift in Sources */,
+				696F1E0924BF82FA0050A260 /* MVVMViewController.swift in Sources */,
 				69D767A1242CF62200B06B2A /* AppDelegate.swift in Sources */,
 				695FAD48242EDFD800D9AE2F /* SearchRecipeView.swift in Sources */,
 				695FAD33242EAEE000D9AE2F /* Secrets.swift in Sources */,

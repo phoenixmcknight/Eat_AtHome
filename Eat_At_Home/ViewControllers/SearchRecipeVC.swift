@@ -59,17 +59,17 @@ class SearchRecipeVC: UIViewController {
     }
     
     @objc private func search() {
-       let searchResultVC = SearchResultViewController()
+        let request = RecipeRequestParameters.from(urlFilters: urlFilters)
+        
+        let searchResultVC = SearchResultViewController(with: RecipeViewModel(request: request, searchQuery: searchRecipeView.mainSearchRecipeBar.text ?? ""))
+        
+        
+        
+        self.navigationController?.pushViewController(searchResultVC, animated: true)
+        
+    }
     
-        
-                searchResultVC.resultURLFilter = self.urlFilters
-            searchResultVC.searchQuery = searchRecipeView.mainSearchRecipeBar.text ?? ""
     
-                self.navigationController?.pushViewController(searchResultVC, animated: true)
-            
-            }
-        
-        
     private func configureVCForPresentation(subView:UIView,viewController:UIViewController) {
         
         subView.frame = CGRect(x: 0, y: 0, width: view.frame.width * 0.80, height: view.frame.height / 2)
@@ -95,7 +95,7 @@ extension SearchRecipeVC:UICollectionViewDataSource,UICollectionViewDelegate
         if collectionView == searchRecipeView.dishTypeCollectionView {
             let currentItem = urlFilters.listOfDishTypes[indexPath.item]
             
-         let curremtOption =  urlFilters.listOfDishTypes[indexPath.item]
+            let curremtOption =  urlFilters.listOfDishTypes[indexPath.item]
             cellOne.setCurrentOption(selected: curremtOption)
             
             cellOne.foodLabel.text  = currentItem.replacingOccurrences(of:"+",with:" ").capitalized
@@ -105,37 +105,37 @@ extension SearchRecipeVC:UICollectionViewDataSource,UICollectionViewDelegate
                 cellOne.hasBeenSelected = true
             }
         } else {
-        if collectionView == searchRecipeView.cuisineCollectionView {
-            
-            guard let cellTwo = searchRecipeView.cuisineCollectionView.dequeueReusableCell(withReuseIdentifier: RegisterCollectionViewCells.cuisine.rawValue, for: indexPath) as? SearchRecipeCourseAndCuisineCollectionViewCell else {return UICollectionViewCell()}
-            
-            cellTwo.hasBeenSelected = false
-            
-            let currentOption = urlFilters.listOfcuisines[indexPath.item]
-            cellTwo.setCurrentOption(selected: currentOption)
-            
-            let currentItem = urlFilters.listOfcuisines[indexPath.item]
-            
-            cellTwo.foodLabel.text = currentItem.replacingOccurrences(of:"+",with:" ").capitalized
-            
-            cellTwo.foodImageView.image = UIImage(named: currentItem)
-            
-            if urlFilters.returnFilter(filter: .dishType)!.contains(cellTwo.returnCurrentOption()){
-                cellTwo.hasBeenSelected = true
+            if collectionView == searchRecipeView.cuisineCollectionView {
+                
+                guard let cellTwo = searchRecipeView.cuisineCollectionView.dequeueReusableCell(withReuseIdentifier: RegisterCollectionViewCells.cuisine.rawValue, for: indexPath) as? SearchRecipeCourseAndCuisineCollectionViewCell else {return UICollectionViewCell()}
+                
+                cellTwo.hasBeenSelected = false
+                
+                let currentOption = urlFilters.listOfcuisines[indexPath.item]
+                cellTwo.setCurrentOption(selected: currentOption)
+                
+                let currentItem = urlFilters.listOfcuisines[indexPath.item]
+                
+                cellTwo.foodLabel.text = currentItem.replacingOccurrences(of:"+",with:" ").capitalized
+                
+                cellTwo.foodImageView.image = UIImage(named: currentItem)
+                
+                if urlFilters.returnFilter(filter: .dishType)!.contains(cellTwo.returnCurrentOption()){
+                    cellTwo.hasBeenSelected = true
+                }
+                
+                return cellTwo
             }
             
-            return cellTwo
-        }
-        
-        if collectionView == searchRecipeView.settingsCollectionView {
-            //
-            guard let cellThree = searchRecipeView.settingsCollectionView.dequeueReusableCell(withReuseIdentifier: RegisterCollectionViewCells.settings.rawValue, for: indexPath) as? SearchRecipeSettingsCollectionViewCell else {return UICollectionViewCell()}
-            
-            
-            cellThree.foodLabel.text = urlFilters.listOfFilters[indexPath.item]
-            
-            return cellThree
-        }
+            if collectionView == searchRecipeView.settingsCollectionView {
+                //
+                guard let cellThree = searchRecipeView.settingsCollectionView.dequeueReusableCell(withReuseIdentifier: RegisterCollectionViewCells.settings.rawValue, for: indexPath) as? SearchRecipeSettingsCollectionViewCell else {return UICollectionViewCell()}
+                
+                
+                cellThree.foodLabel.text = urlFilters.listOfFilters[indexPath.item]
+                
+                return cellThree
+            }
         }
         return cellOne
     }
@@ -255,7 +255,7 @@ extension SearchRecipeVC:UICollectionViewDataSource,UICollectionViewDelegate
                 print("")
                 
             }
-           
+            
         } else if collectionView == searchRecipeView.cuisineCollectionView {
             guard let selectedCell = collectionView.cellForItem(at: indexPath) as? SearchRecipeCourseAndCuisineCollectionViewCell else {return}
             
@@ -272,11 +272,11 @@ extension SearchRecipeVC:UICollectionViewDataSource,UICollectionViewDelegate
                 urlFilters.addFilter(newStringFilter: currentCuisine, newNumberFilter: nil, filter: .cuisine)
                 selectedCell.hasBeenSelected = true
             }
-          
+            
             
         } else if collectionView == searchRecipeView.dishTypeCollectionView {
             
-             guard let selectedCell = collectionView.cellForItem(at: indexPath) as? SearchRecipeCourseAndCuisineCollectionViewCell else {return}
+            guard let selectedCell = collectionView.cellForItem(at: indexPath) as? SearchRecipeCourseAndCuisineCollectionViewCell else {return}
             
             let currentDishType = urlFilters.listOfDishTypes[indexPath.item]
             
@@ -286,7 +286,7 @@ extension SearchRecipeVC:UICollectionViewDataSource,UICollectionViewDelegate
                 selectedCell.hasBeenSelected = false
             } else {
                 urlFilters.addFilter(newStringFilter: currentDishType, newNumberFilter: nil, filter: .dishType)
-                    selectedCell.hasBeenSelected = true
+                selectedCell.hasBeenSelected = true
             }
             
         }
